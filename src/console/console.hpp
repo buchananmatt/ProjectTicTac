@@ -35,9 +35,9 @@ public:
 
 private:
 
-    std::queue<std::string> m_console_lines = {};
+    std::queue<std::string> m_console_lines;
 
-    static const int m_max_queue_size;
+    int m_max_queue_size;
 
 };
 

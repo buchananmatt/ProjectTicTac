@@ -111,7 +111,7 @@ void Printer::RefreshScreen() {
 
     PrintTitle();
     PrintScore();
-    PrintBoard();
+    PrintBoard(GAME_BOARD);
     PrintConsole();
     PrintTurn();
     PrintHelp();
@@ -123,6 +123,7 @@ void Printer::RefreshScreen() {
 void Printer::RefreshBoard() {
 
     PrintBoard(GAME_BOARD);
+    PrintTurn();
 }
 
 //
@@ -176,12 +177,13 @@ void Printer::PrintScore() {
 //
 //
 //
-void Printer::PrintBoard(enum board_type) {
+void Printer::PrintBoard(int board_type) {
 
     int row_start;
 
-    if(GAME_BOARD)   row_start = 2;
+    if(GAME_BOARD)  row_start = 2;
     else            row_start = 1;
+
     int column_start = 7;
 
     wmove(win, row_start+1, column_start);

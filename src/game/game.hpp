@@ -20,6 +20,7 @@
 // SEE THE LICENSE FOR THE SPECIFIC LANGUAGE GOVERNING PERMISSIONS AND
 // LIMITATIONS UNDER THE LICENSE.
 
+class array;
 
 class Console;
 class Computer;
@@ -53,18 +54,20 @@ private:
     int m_o_wins;
     int m_player_turn; 
 
-    enum turn {
-        PLAYER_X_TURN,
-        PLAYER_Y_TURN
-    } m_turn;
+    std::array<int*> board = { 1, 2, 3, 
+                               4, 5, 6, 
+                               7, 8, 9 };
 
     enum event_list {
         START_GAME,
+        PLAYER_O_TURN,
+        PLAYER_X_TURN,
         PLAYER_O_MOVE,
         PLAYER_X_MOVE,
         PLAYER_O_WIN,
         PLAYER_X_WIN,
-        END_GAME
+        END_GAME,
+        ERROR
     } m_event;
     
 private:
@@ -74,7 +77,9 @@ private:
     ~Game() {}
 
     void NewGame();
-
+    void Player_X_Turn();
+    void Player_O_Turn();
+    bool MatchEnd();
 };
 
 } // NAMESPACE BOCAN

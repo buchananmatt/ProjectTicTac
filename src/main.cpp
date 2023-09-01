@@ -29,12 +29,10 @@ int main(int argc, char** argv) {
     auto& game = bocan::Game::Get();
 
     do {
-        if(game.Start()){
-
+        if(game.Start())
             game.GameLoop();
-        }
-
+            
     } while(!game.EndGame());
 
     return 0;
-}cccccbgnedtuduckccgevikdtlrhbknthlvednnlrrfl
+}
