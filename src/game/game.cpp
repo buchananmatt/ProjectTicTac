@@ -36,16 +36,29 @@ Game Game::s_instance;
 //
 bool Game::Start() {
 
+    // setup the screen for the first game
     if(m_first_run) {
         printer.SetupScreen();
         m_first_run = false;
     }
 
-    NewGame();
+    // reset game state
+    m_player_turn = START_GAME;
+    m_match = 0;
+    m_x_wins = 0;
+    m_o_wins = 0;
+
+    // reset board state
+    for(auto& i : board) {
+        i = EMPTY;
+    }
+
+    // reset the screen
     printer.ResetScreen();
     printer.RefreshScreen();
     printer.SetConsoleOutput(START_GAME);
 
+    // wait for start from the user
     return printer.GetConsoleInput();
 }
 
@@ -62,7 +75,7 @@ void Game::GameLoop() {
         m_match_end = false;
         bool player_x_final_match = false;
 
-        // check to see who begins final match (5)
+        // check to see who begins final match
         if(m_match == 5 && m_x_wins < m_o_wins) 
             player_x_final_match = true;
 
@@ -140,28 +153,6 @@ bool Game::EndGame() {
 //
 //
 //
-void Game::NewGame() {
-
-    m_player_turn = START_GAME;
-    m_match = 0;
-    m_x_wins = 0;
-    m_o_wins = 0;
-
-    for(auto& i : board) {
-        i = EMPTY;
-    }
-
-    // board map
-    // array pos = user pos
-    // board[0] = 1
-    // board[1] = 2
-    // board[2] = 3
-    // ...
-}
-
-//
-//
-//
 void Game::Player_X_Turn() {
 
     m_player_turn = PLAYER_X_TURN;
@@ -176,6 +167,7 @@ void Game::Player_X_Turn() {
             printer.SetConsoleOutput(INVALID_MOVE);
         } else {
             board.at(move-1) = PLAYER_X_POS;
+            printer.SetConsoleOutput(PLAYER_X_MOVE);
             valid_move = true;
         }
     } while(!valid_move);
@@ -204,6 +196,7 @@ void Game::Player_O_Turn() {
     for(auto i : board) {
         if(i == EMPTY && move_flag == false) {
             board.at(i) = PLAYER_O_POS;
+            printer.SetConsoleOutput(PLAYER_O_MOVE);
             move_flag == true;
         } 
     }

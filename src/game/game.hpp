@@ -61,7 +61,6 @@ private:
     Game(const Game&) = delete;
     ~Game() {}
 
-    void NewGame();
     void Player_X_Turn();
     void Player_O_Turn();
 };

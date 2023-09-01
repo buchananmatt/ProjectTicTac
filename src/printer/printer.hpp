@@ -39,18 +39,15 @@ public:
     void ResetScreen();
     void RefreshScreen();
 
-    void RefreshBoard();
-    void RefreshConsole();
-    void RefreshScore();
-
     char GetConsoleInput();
     void SetConsoleOutput(int);
+    void SetConsoleOutput(int, int);
 
 private:
 
     static Printer s_instance;
 
-    std::queue<std::string> m_console;
+    std::deque<std::string> m_console_queue;
 
     int m_max_console_size;
 
