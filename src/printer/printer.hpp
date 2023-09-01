@@ -35,15 +35,16 @@ public:
     void RefreshConsole();
     void RefreshScore();
 
-    char GetPlayerInput();
+    char GetConsoleInput();
+    void ConsoleOutput(int);
 
 private:
 
     struct window_metrics {
-        static const int y_origin;
-        static const int x_origin;
-        static const int y_height;
-        static const int x_length;
+        int y_origin;
+        int x_origin;
+        int y_height;
+        int x_length;
     }
 
     m_title,
@@ -59,6 +60,10 @@ private:
         HELP_BOARD,
         GAME_BOARD
     } m_board_type;
+
+    std::queue<std::string> m_console_lines;
+
+    int m_max_queue_size;
 
 private:
 

@@ -112,7 +112,7 @@ void Game::NewGame() {
 void Game::Player_X_Turn() {
     console.EventLog(PLAYER_X_TURN);
     char move = printer.GetPlayerInput();
-
+    // cast move to an 
 }
 
 //

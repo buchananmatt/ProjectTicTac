@@ -41,12 +41,8 @@ private:
 
     static Game s_instance;
 
-    friend class Console;
-    friend class Computer;
     friend class Printer;
 
-    bocan::Console console;
-    bocan::Computer computer;
     bocan::Printer printer;
 
     int m_match;
