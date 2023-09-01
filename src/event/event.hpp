@@ -31,10 +31,20 @@ namespace bocan {
         PLAYER_X_TURN,
         PLAYER_O_MOVE,
         PLAYER_X_MOVE,
-        PLAYER_O_WIN,
-        PLAYER_X_WIN,
+        PLAYER_O_MATCH_WIN,
+        PLAYER_X_MATCH_WIN,
+        MATCH_TIE,
+        PLAYER_O_GAME_WIN,
+        PLAYER_X_GAME_WIN,
         END_GAME,
+        INVALID_MOVE,
         ERROR
+    };
+
+    enum board_state {
+        EMPTY,
+        PLAYER_X_POS,
+        PLAYER_O_POS
     };
 
 } // NAMESPACE BOCAN

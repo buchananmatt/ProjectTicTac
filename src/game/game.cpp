@@ -54,10 +54,12 @@ bool Game::Start() {
 //
 void Game::GameLoop() {
 
+    // game is setup for five matches
     for(int i = 0; i < 5; i++) {
 
         // setup the match
         m_match = i + 1;
+        m_match_end = false;
         bool player_x_final_match = false;
 
         // check to see who begins final match (5)
@@ -70,23 +72,60 @@ void Game::GameLoop() {
                 case 1:
                 case 3:
                     Player_X_Turn();
+                    if(m_match_end) break;
                     Player_O_Turn();
+                    break;
                 case 2:
                 case 4:
                     Player_O_Turn();
+                    if(m_match_end) break;
                     Player_X_Turn();
+                    break;
                 case 5:
                     if(player_x_final_match) {
                         Player_X_Turn();
+                        if(m_match_end) break;
                         Player_O_Turn();
                     } else {
                         Player_O_Turn();
+                        if(m_match_end) break;
                         Player_X_Turn();    
                     }
+                    break;
                 default:
                     printer.SetConsoleOutput(ERROR);
+                    break;
             }
-        } while(!MatchEnd());
+        } while(!m_match_end);
+    
+        // determine match winner
+        for(auto i : board) {
+
+            if( // check horizontal win
+                (board.at(i) == board.at(i+1) && board.at(i) == board.at(i+2)) ||
+                // check vertical win
+                (board.at(i) == board.at(i+3) && board.at(i) == board.at(i+6)) ||
+                // check right diagonal win
+                (board.at(i) == board.at(i+4) && board.at(i) == board.at(i+8)) ||
+                // check left diagonal win
+                (board.at(i) == board.at(i+2) && board.at(i) == board.at(i+4)) ) {
+
+                switch(i) {
+                    case PLAYER_X_POS:
+                        printer.SetConsoleOutput(PLAYER_X_MATCH_WIN);
+                        m_x_wins++;
+                        break;
+                    case PLAYER_O_POS:
+                        printer.SetConsoleOutput(PLAYER_O_MATCH_WIN);
+                        m_o_wins++;
+                        break;
+                }
+            } else {
+                printer.SetConsoleOutput(MATCH_TIE);
+                m_x_wins++;
+                m_o_wins++;
+            }
+        }
     }
 }
 
@@ -108,33 +147,71 @@ void Game::NewGame() {
     m_o_wins = 0;
     m_player_turn = 0;
 
-    for(auto& p : board) {
-        p = nullptr;
+    for(auto& i : board) {
+        i = EMPTY;
     }
+
+    // board map
+    // array pos = user pos
+    // board[0] = 1
+    // board[1] = 2
+    // board[2] = 3
+    // ...
 }
 
 //
 //
 //
 void Game::Player_X_Turn() {
-    printer.SetConsoleOutput(PLAYER_X_TURN);
-    char move = printer.GetConsoleInput();
-    // cast move to an 
+
+    bool valid_move = true;
+
+    do {
+        printer.SetConsoleOutput(PLAYER_X_TURN);
+        char c_move = printer.GetConsoleInput();
+        int move = c_move - '0';
+
+        if(board.at(move-1) != EMPTY) {
+            printer.SetConsoleOutput(INVALID_MOVE);
+        } else {
+            board.at(move-1) = PLAYER_X_POS;
+            valid_move = true;
+        }
+    } while(!valid_move);
+
+    // check for any empty spaces left
+    bool empty_space_flag = false;
+    for(auto i : board) {
+        if(i == EMPTY) empty_space_flag = true;
+    }
+    if(empty_space_flag == true)    m_match_end = false;
+    else                            m_match_end = true;
 }
 
 //
 //
 //
 void Game::Player_O_Turn() {
+
     printer.SetConsoleOutput(PLAYER_O_TURN);
 //    char move = computer.Move();
 
+    // initial logic for opposing player
+    bool move_flag = false;
+    for(auto i : board) {
+        if(i == EMPTY && move_flag == false) {
+            board.at(i) = PLAYER_O_POS;
+            move_flag == true;
+        } 
+    }
+
+    // check for any empty spaces left
+    bool empty_space_flag = false;
+    for(auto i : board) {
+        if(i == EMPTY) empty_space_flag = true;
+    }
+    if(empty_space_flag == true)    m_match_end = false;
+    else                            m_match_end = true;
 }
 
-//
-//
-//
-bool Game::MatchEnd() {
 
-
-}

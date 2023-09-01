@@ -25,8 +25,6 @@
 
 class array;
 
-class Printer;
-
 namespace bocan {
 
 class Game {
@@ -46,9 +44,11 @@ private:
 
     Printer& printer = bocan::Printer::Get();
 
-    std::array<int*, 9> board;
+    std::array<int, 9> board;
 
     bool m_first_run = false;
+
+    bool m_match_end;
 
     int m_match;
     int m_x_wins;
@@ -64,7 +64,6 @@ private:
     void NewGame();
     void Player_X_Turn();
     void Player_O_Turn();
-    bool MatchEnd();
 };
 
 } // NAMESPACE BOCAN
