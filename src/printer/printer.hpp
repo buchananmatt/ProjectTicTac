@@ -20,15 +20,23 @@
 // SEE THE LICENSE FOR THE SPECIFIC LANGUAGE GOVERNING PERMISSIONS AND
 // LIMITATIONS UNDER THE LICENSE.
 
+#ifndef PRINTER_HPP
+#define PRINTER_HPP
+
+#include <ncurses.h>
+
+class queue;
+class string;
 
 namespace bocan {
 
 class Printer {
 public:
     
-    Printer();
-    ~Printer();
+    static Printer& Get() { return s_instance; }
 
+    void SetupScreen();
+    void ResetScreen();
     void RefreshScreen();
 
     void RefreshBoard();
@@ -36,9 +44,24 @@ public:
     void RefreshScore();
 
     char GetConsoleInput();
-    void ConsoleOutput(int);
+    void SetConsoleOutput(int);
 
 private:
+
+    static Printer s_instance;
+
+    std::queue<std::string> m_console;
+
+    int m_max_console_size;
+
+    WINDOW* win_title;
+    WINDOW* win_board;
+    WINDOW* win_turn;
+    WINDOW* win_score_game;
+    WINDOW* win_score_x;
+    WINDOW* win_score_o;
+    WINDOW* win_console;
+    WINDOW* win_help;
 
     struct window_metrics {
         int y_origin;
@@ -46,26 +69,25 @@ private:
         int y_height;
         int x_length;
     }
-
-    m_title,
-    m_board,
-    m_turn,
-    m_score_game,
-    m_score_x,
-    m_score_o,
-    m_console,
-    m_help;
+        m_title,
+        m_board,
+        m_turn,
+        m_score_game,
+        m_score_x,
+        m_score_o,
+        m_console,
+        m_help;
 
     enum board_type {
         HELP_BOARD,
         GAME_BOARD
     } m_board_type;
 
-    std::queue<std::string> m_console_lines;
-
-    int m_max_queue_size;
-
 private:
+
+    Printer() {}
+    Printer(const Printer&) = delete;
+    ~Printer() {}
 
     void PrintTitle();
     void PrintScore();
@@ -77,3 +99,5 @@ private:
 };
 
 } // NAMESPACE BOCAN
+
+#endif // PRINTER_HPP

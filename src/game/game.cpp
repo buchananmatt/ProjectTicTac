@@ -20,8 +20,9 @@
 // SEE THE LICENSE FOR THE SPECIFIC LANGUAGE GOVERNING PERMISSIONS AND
 // LIMITATIONS UNDER THE LICENSE.
 
-#include "../computer/computer.hpp"
-#include "../console/console.hpp"
+#include <array>
+
+#include "../event/event.hpp"
 #include "../game/game.hpp"
 #include "../printer/printer.hpp"
 
@@ -35,11 +36,17 @@ Game Game::s_instance;
 //
 bool Game::Start() {
 
-    NewGame();
-    console.ConsoleEvent(START_GAME);
-    printer.RefreshScreen();
+    if(m_first_run) {
+        printer.SetupScreen();
+        m_first_run = false;
+    }
 
-    return printer.GetPlayerInput();
+    NewGame();
+    printer.ResetScreen();
+    printer.RefreshScreen();
+    printer.SetConsoleOutput(START_GAME);
+
+    return printer.GetConsoleInput();
 }
 
 //
@@ -77,7 +84,7 @@ void Game::GameLoop() {
                         Player_X_Turn();    
                     }
                 default:
-                    console.EventLog(ERROR);
+                    printer.SetConsoleOutput(ERROR);
             }
         } while(!MatchEnd());
     }
@@ -110,8 +117,8 @@ void Game::NewGame() {
 //
 //
 void Game::Player_X_Turn() {
-    console.EventLog(PLAYER_X_TURN);
-    char move = printer.GetPlayerInput();
+    printer.SetConsoleOutput(PLAYER_X_TURN);
+    char move = printer.GetConsoleInput();
     // cast move to an 
 }
 
@@ -119,15 +126,15 @@ void Game::Player_X_Turn() {
 //
 //
 void Game::Player_O_Turn() {
-    console.EventLog(PLAYER_O_TURN);
-    char move = computer.Move();
+    printer.SetConsoleOutput(PLAYER_O_TURN);
+//    char move = computer.Move();
 
 }
 
 //
 //
 //
-void Game::MatchEnd() {
+bool Game::MatchEnd() {
 
 
 }

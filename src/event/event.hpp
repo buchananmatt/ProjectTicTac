@@ -1,5 +1,5 @@
 //
-// GAME.HPP [PROJECT TICTAC]
+// EVENT.HPP [PROJECT TICTAC]
 // C++ VERSION GNU++14
 // macOS 11.7.9
 // DUAL-CORE INTEL CORE i5 @ 2.8 GHZ
@@ -20,53 +20,23 @@
 // SEE THE LICENSE FOR THE SPECIFIC LANGUAGE GOVERNING PERMISSIONS AND
 // LIMITATIONS UNDER THE LICENSE.
 
-#ifndef GAME_HPP
-#define GAME_HPP
-
-class array;
-
-class Printer;
+#ifndef EVENT_HPP
+#define EVENT_HPP
 
 namespace bocan {
 
-class Game {
-public:
-
-    static Game& Get() { return s_instance; }
-
-    bool Start();
-    void GameLoop();
-    bool EndGame();
-
-private:
-
-    static Game s_instance;
-
-    friend class Printer;
-
-    Printer& printer = bocan::Printer::Get();
-
-    std::array<int*, 9> board;
-
-    bool m_first_run = false;
-
-    int m_match;
-    int m_x_wins;
-    int m_o_wins;
-    int m_player_turn;
-   
-private:
-
-    Game() {}
-    Game(const Game&) = delete;
-    ~Game() {}
-
-    void NewGame();
-    void Player_X_Turn();
-    void Player_O_Turn();
-    bool MatchEnd();
-};
+   enum events {
+        START_GAME,
+        PLAYER_O_TURN,
+        PLAYER_X_TURN,
+        PLAYER_O_MOVE,
+        PLAYER_X_MOVE,
+        PLAYER_O_WIN,
+        PLAYER_X_WIN,
+        END_GAME,
+        ERROR
+    };
 
 } // NAMESPACE BOCAN
 
-#endif // CALCULATOR_HPP
+#endif // EVENT_HPP

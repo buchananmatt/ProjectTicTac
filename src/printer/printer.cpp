@@ -20,17 +20,24 @@
 // SEE THE LICENSE FOR THE SPECIFIC LANGUAGE GOVERNING PERMISSIONS AND
 // LIMITATIONS UNDER THE LICENSE.
 
+#include <queue>
+#include <string>
 
 #include <ncurses.h>
 
+#include "../event/event.hpp"
+#include "../game/game.hpp"
 #include "../printer/printer.hpp"
 
 using bocan::Printer;
 
+// brief Singleton instance of the printer class object.
+Printer Printer::s_instance;
+
 // brief
 // brief
 // brief
-Printer::Printer() {
+void Printer::SetupScreen() {
 
     m_title.y_origin = 2;
     m_title.x_origin = 10;
@@ -72,19 +79,21 @@ Printer::Printer() {
     m_help.y_height = 18;
     m_help.x_length = 106;
 
+    m_max_console_size = m_console.y_height - 2;
+
     initscr();
     cbreak(); 
     noecho();
     keypad(stdscr, true);
 
-    WINDOW* win_title = newwin(m_title.y_height, m_title.x_length, m_title.y_origin, m_title.x_origin);
-    WINDOW* win_board = newwin(m_board.y_height, m_board.x_length, m_board.y_origin, m_board.x_origin);
-    WINDOW* win_turn = newwin(m_turn.y_height, m_turn.x_length, m_turn.y_origin, m_turn.x_origin);
-    WINDOW* win_score_game = newwin(m_score_game.y_height, m_score_game.x_length, m_score_game.y_origin, m_score_game.x_origin);
-    WINDOW* win_score_x = newwin(m_score_x.y_height, m_score_x.x_length, m_score_x.y_origin, m_score_x.x_origin);
-    WINDOW* win_score_o = newwin(m_score_o.y_height, m_score_o.x_length, m_score_o.y_origin, m_score_o.x_origin);
-    WINDOW* win_console = newwin(m_console.y_height, m_console.x_length, m_console.y_origin, m_console.x_origin);
-    WINDOW* win_help = newwin(m_help.y_height, m_help.x_length, m_help.y_origin, m_help.x_origin);
+    win_title = newwin(m_title.y_height, m_title.x_length, m_title.y_origin, m_title.x_origin);
+    win_board = newwin(m_board.y_height, m_board.x_length, m_board.y_origin, m_board.x_origin);
+    win_turn = newwin(m_turn.y_height, m_turn.x_length, m_turn.y_origin, m_turn.x_origin);
+    win_score_game = newwin(m_score_game.y_height, m_score_game.x_length, m_score_game.y_origin, m_score_game.x_origin);
+    win_score_x = newwin(m_score_x.y_height, m_score_x.x_length, m_score_x.y_origin, m_score_x.x_origin);
+    win_score_o = newwin(m_score_o.y_height, m_score_o.x_length, m_score_o.y_origin, m_score_o.x_origin);
+    win_console = newwin(m_console.y_height, m_console.x_length, m_console.y_origin, m_console.x_origin);
+    win_help = newwin(m_help.y_height, m_help.x_length, m_help.y_origin, m_help.x_origin);
 
     wborder(win_board, 0, 0, 0, 0, 0, 0, 0, 0);
     wborder(win_title, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -96,12 +105,12 @@ Printer::Printer() {
     wborder(win_help, 0, 0, 0, 0, 0, 0, 0, 0);
 }
 
-// brief
-// brief
-// brief
-Printer::~Printer() {
+//
+//
+//
+void Printer::ResetScreen() {
 
-    endwin();
+
 }
 
 //
@@ -145,7 +154,7 @@ void Printer::RefreshScore() {
 //
 //
 //
-char Printer::GetPlayerInput() {
+char Printer::GetConsoleInput() {
 
     wmove(win_console, 24, 1);
     static_cast<void> ( waddch(win_console, '>') );
@@ -179,10 +188,16 @@ void Printer::PrintScore() {
 //
 void Printer::PrintBoard(int board_type) {
 
+    WINDOW* win;
     int row_start;
 
-    if(GAME_BOARD)  row_start = 2;
-    else            row_start = 1;
+    if(GAME_BOARD) {  
+        win = win_board;
+        row_start = 2;
+    } else {
+        win = win_help;
+        row_start = 1;
+    }
 
     int column_start = 7;
 
@@ -191,7 +206,7 @@ void Printer::PrintBoard(int board_type) {
     // print board row borders
     for(int j = 0; j < 25; j++) {
     
-        waddch(win, '#'); 
+        waddch(win_board, '#'); 
     }
 
 
@@ -399,7 +414,7 @@ void Printer::PrintTurn() {
 
     wmove(win_turn, 2, 5);
 
-    switch(game.m_player_turn) {
+    switch(bocan::Game::Get().m_player_turn) {
         case PLAYER_X_TURN:
             static_cast<void> ( waddstr(win_turn, "*** PLAYER 'X' TURN (YOU) ***") );
             break;
