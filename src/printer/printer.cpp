@@ -25,8 +25,8 @@
 
 #include <ncurses.h>
 
-#include "../event/event.hpp"
 #include "../game/game.hpp"
+#include "../game/gamestate.hpp"
 #include "../printer/printer.hpp"
 
 using bocan::Printer;
@@ -129,31 +129,6 @@ void Printer::RefreshScreen() {
 //
 //
 //
-void Printer::RefreshBoard() {
-
-    PrintBoard(GAME_BOARD);
-    PrintTurn();
-}
-
-//
-//
-//
-void Printer::RefreshConsole() {
-
-    PrintConsole();
-}
-
-//
-//
-//
-void Printer::RefreshScore() {
-
-    PrintScore();
-}
-
-//
-//
-//
 char Printer::GetConsoleInput() {
 
     wmove(win_console, 24, 1);
@@ -161,6 +136,37 @@ char Printer::GetConsoleInput() {
     int input = wgetch(win_console);
 
     return static_cast<char> (input);
+}
+
+void Printer::SetConsoleOutput(int event) {
+    switch(event) {
+        case START_GAME:
+
+        case PLAYER_O_TURN:
+        
+        case PLAYER_X_TURN:
+        
+        case PLAYER_O_MOVE:
+        
+        case PLAYER_X_MOVE:
+        
+        case PLAYER_O_MATCH_WIN:
+        
+        case PLAYER_X_MATCH_WIN:
+        
+        case MATCH_TIE:
+        
+        case PLAYER_O_GAME_WIN:
+        
+        case PLAYER_X_GAME_WIN:
+        
+        case END_GAME:
+        
+        case INVALID_MOVE:
+
+        case ERROR:
+
+    }
 }
 
 //

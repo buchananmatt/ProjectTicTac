@@ -50,10 +50,10 @@ private:
 
     bool m_match_end;
 
+    int m_player_turn;
     int m_match;
     int m_x_wins;
     int m_o_wins;
-    int m_player_turn;
    
 private:
 

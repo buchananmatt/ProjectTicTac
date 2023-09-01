@@ -78,11 +78,6 @@ private:
         m_console,
         m_help;
 
-    enum board_type {
-        HELP_BOARD,
-        GAME_BOARD
-    } m_board_type;
-
 private:
 
     Printer() {}

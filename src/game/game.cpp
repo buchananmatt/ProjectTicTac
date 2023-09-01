@@ -22,8 +22,8 @@
 
 #include <array>
 
-#include "../event/event.hpp"
 #include "../game/game.hpp"
+#include "../game/gamestate.hpp"
 #include "../printer/printer.hpp"
 
 using bocan::Game;
@@ -142,10 +142,10 @@ bool Game::EndGame() {
 //
 void Game::NewGame() {
 
+    m_player_turn = START_GAME;
     m_match = 0;
     m_x_wins = 0;
     m_o_wins = 0;
-    m_player_turn = 0;
 
     for(auto& i : board) {
         i = EMPTY;
@@ -164,6 +164,7 @@ void Game::NewGame() {
 //
 void Game::Player_X_Turn() {
 
+    m_player_turn = PLAYER_X_TURN;
     bool valid_move = true;
 
     do {
@@ -193,6 +194,8 @@ void Game::Player_X_Turn() {
 //
 void Game::Player_O_Turn() {
 
+    m_player_turn = PLAYER_O_TURN;
+
     printer.SetConsoleOutput(PLAYER_O_TURN);
 //    char move = computer.Move();
 
@@ -213,5 +216,3 @@ void Game::Player_O_Turn() {
     if(empty_space_flag == true)    m_match_end = false;
     else                            m_match_end = true;
 }
-
-
