@@ -84,28 +84,28 @@ void Printer::SetupScreen() {
 
     m_max_console_size = m_console.y_height - 5;
 
-    initscr();
-    cbreak(); 
-    noecho();
-    keypad(stdscr, true);
+    initscr();                                          //curses.h
+    cbreak();                                           //curses.h
+    noecho();                                           //curses.h
+    keypad(stdscr, true);                               //curses.h
 
-    win_title = newwin(m_title.y_height, m_title.x_length, m_title.y_origin, m_title.x_origin);
-    win_board = newwin(m_board.y_height, m_board.x_length, m_board.y_origin, m_board.x_origin);
-    win_turn = newwin(m_turn.y_height, m_turn.x_length, m_turn.y_origin, m_turn.x_origin);
-    win_score_game = newwin(m_score_game.y_height, m_score_game.x_length, m_score_game.y_origin, m_score_game.x_origin);
-    win_score_x = newwin(m_score_x.y_height, m_score_x.x_length, m_score_x.y_origin, m_score_x.x_origin);
-    win_score_o = newwin(m_score_o.y_height, m_score_o.x_length, m_score_o.y_origin, m_score_o.x_origin);
-    win_console = newwin(m_console.y_height, m_console.x_length, m_console.y_origin, m_console.x_origin);
-    win_help = newwin(m_help.y_height, m_help.x_length, m_help.y_origin, m_help.x_origin);
+    win_title = newwin(m_title.y_height, m_title.x_length, m_title.y_origin, m_title.x_origin);                             //curses.h
+    win_board = newwin(m_board.y_height, m_board.x_length, m_board.y_origin, m_board.x_origin);                             //curses.h
+    win_turn = newwin(m_turn.y_height, m_turn.x_length, m_turn.y_origin, m_turn.x_origin);                                  //curses.h
+    win_score_game = newwin(m_score_game.y_height, m_score_game.x_length, m_score_game.y_origin, m_score_game.x_origin);    //curses.h
+    win_score_x = newwin(m_score_x.y_height, m_score_x.x_length, m_score_x.y_origin, m_score_x.x_origin);                   //curses.h
+    win_score_o = newwin(m_score_o.y_height, m_score_o.x_length, m_score_o.y_origin, m_score_o.x_origin);                   //curses.h
+    win_console = newwin(m_console.y_height, m_console.x_length, m_console.y_origin, m_console.x_origin);                   //curses.h
+    win_help = newwin(m_help.y_height, m_help.x_length, m_help.y_origin, m_help.x_origin);                                  //curses.h
 
-    wborder(win_board, 0, 0, 0, 0, 0, 0, 0, 0);
-    wborder(win_title, 0, 0, 0, 0, 0, 0, 0, 0);
-    wborder(win_turn, 0, 0, 0, 0, 0, 0, 0, 0);
-    wborder(win_score_game, 0, 0, 0, 0, 0, 0, 0, 0);
-    wborder(win_score_x, 0, 0, 0, 0, 0, 0, 0, 0);
-    wborder(win_score_o, 0, 0, 0, 0, 0, 0, 0, 0);
-    wborder(win_console, 0, 0, 0, 0, 0, 0, 0, 0);
-    wborder(win_help, 0, 0, 0, 0, 0, 0, 0, 0);
+    wborder(win_board, 0, 0, 0, 0, 0, 0, 0, 0);         //curses.h
+    wborder(win_title, 0, 0, 0, 0, 0, 0, 0, 0);         //curses.h
+    wborder(win_turn, 0, 0, 0, 0, 0, 0, 0, 0);          //curses.h
+    wborder(win_score_game, 0, 0, 0, 0, 0, 0, 0, 0);    //curses.h
+    wborder(win_score_x, 0, 0, 0, 0, 0, 0, 0, 0);       //curses.h
+    wborder(win_score_o, 0, 0, 0, 0, 0, 0, 0, 0);       //curses.h
+    wborder(win_console, 0, 0, 0, 0, 0, 0, 0, 0);       //curses.h
+    wborder(win_help, 0, 0, 0, 0, 0, 0, 0, 0);          //curses.h
 }
 
 // brief Resets the screen to start game state.
@@ -135,7 +135,15 @@ void Printer::RefreshScreen() {
 // return None.
 void Printer::ExitScreen() {
 
-    endwin();
+    delwin(win_board);                                  //curses.h
+    delwin(win_title);                                  //curses.h
+    delwin(win_turn);                                   //curses.h
+    delwin(win_score_game);                             //curses.h
+    delwin(win_score_x);                                //curses.h
+    delwin(win_score_o);                                //curses.h
+    delwin(win_console);                                //curses.h
+    delwin(win_help);                                   //curses.h
+    endwin();                                           //curses.h
 }
 
 // brief Receives the user input through the console interface.
@@ -143,9 +151,9 @@ void Printer::ExitScreen() {
 // return Character representing user input.
 char Printer::GetConsoleInput() {
 
-    wmove(win_console, 24, 1);
-    static_cast<void> ( waddch(win_console, '>') );
-    int input = wgetch(win_console);
+    wmove(win_console, 24, 1);                          //curses.h
+    static_cast<void> ( waddch(win_console, '>') );     //curses.h
+    int input = wgetch(win_console);                    //curses.h
 
     return static_cast<char> (input);
 }
@@ -257,9 +265,9 @@ void Printer::SetConsoleOutput(int event, int pos) {
 // return None.
 void Printer::PrintTitle() {
 
-    wmove(win_title, 3, 12);
-    static_cast<void> ( waddstr(win_title, "PROJECT TIC TAC") );
-    wrefresh(win_title);
+    wmove(win_title, 3, 12);                                        //curses.h
+    static_cast<void> ( waddstr(win_title, "PROJECT TIC TAC") );    //curses.h
+    wrefresh(win_title);                                            //curses.h
 }
 
 // brief Prints the game index and player score windows.
@@ -267,39 +275,39 @@ void Printer::PrintTitle() {
 // return None.
 void Printer::PrintScore() {
 
-    wmove(win_score_game, 2, 8);
-    static_cast<void> ( waddstr(win_score_game, "GAME") );
+    wmove(win_score_game, 2, 8);                                    //curses.h
+    static_cast<void> ( waddstr(win_score_game, "GAME") );          //curses.h
 
-    wmove(win_score_game, 4, 7);
-    char c_match = bocan::Game::Get().m_match + '0';
-    static_cast<void> ( waddch(win_score_game, c_match) );
-    static_cast<void> ( waddstr(win_score_game, " // 5") );
+    wmove(win_score_game, 4, 7);                                    //curses.h
+    char c_match = bocan::Game::Get().m_match + '0';                //curses.h
+    static_cast<void> ( waddch(win_score_game, c_match) );          //curses.h
+    static_cast<void> ( waddstr(win_score_game, " // 5") );         //curses.h
 
-    wmove(win_score_x, 2, 6);
-    static_cast<void> ( waddstr(win_score_x, "'X' WINS") );
+    wmove(win_score_x, 2, 6);                                       //curses.h
+    static_cast<void> ( waddstr(win_score_x, "'X' WINS") );         //curses.h
 
-    wmove(win_score_x, 4, 9);
-    char c_x_wins = bocan::Game::Get().m_x_wins + '0';
-    static_cast<void> ( waddch(win_score_x, c_x_wins) );
+    wmove(win_score_x, 4, 9);                                       //curses.h
+    char c_x_wins = bocan::Game::Get().m_x_wins + '0';              //curses.h
+    static_cast<void> ( waddch(win_score_x, c_x_wins) );            //curses.h
 
-    wmove(win_score_o, 2, 6);
-    static_cast<void> ( waddstr(win_score_o, "'O' WINS") );
+    wmove(win_score_o, 2, 6);                                       //curses.h
+    static_cast<void> ( waddstr(win_score_o, "'O' WINS") );         //curses.h
 
-    wmove(win_score_o, 4, 9);
-    char c_o_wins = bocan::Game::Get().m_o_wins + '0';
-    static_cast<void> ( waddch(win_score_o, c_o_wins) );
+    wmove(win_score_o, 4, 9);                                       //curses.h
+    char c_o_wins = bocan::Game::Get().m_o_wins + '0';              //curses.h
+    static_cast<void> ( waddch(win_score_o, c_o_wins) );            //curses.h
 
-    wrefresh(win_score_game);
-    wrefresh(win_score_x);
-    wrefresh(win_score_o);
-}
+    wrefresh(win_score_game);                                       //curses.h
+    wrefresh(win_score_x);                                          //curses.h
+    wrefresh(win_score_o);                                          //curses.h
+}           
 
 // brief Prints the tic-tac-toe board in both the board window and help window.
 // param[in] Integer representing board type enumerator.
 // return None.
 void Printer::PrintBoard(int board_type) { 
 
-    WINDOW* win;
+    WINDOW* win;                                                    //curses.h
     int row_start;
 
     if(board_type == GAME_BOARD) {  
@@ -312,85 +320,85 @@ void Printer::PrintBoard(int board_type) {
 
     int column_start = 7;
 
-    wmove(win, row_start+1, column_start);
+    wmove(win, row_start+1, column_start);                          //curses.h
 
     // print board row borders
     for(int j = 0; j < 25; j++) {
     
-        waddch(win, '#'); 
+        waddch(win, '#');                                           //curses.h
     }
 
 
-    wmove(win, row_start+2, column_start);
+    wmove(win, row_start+2, column_start);                          //curses.h
 
     // print board column borders
     for(int k = 0; k < 25; k++) {
 
         if(k == 0 || k == 8 || k == 16 || k == 24) {
 
-            waddch(win, '#');
+            waddch(win, '#');                                       //curses.h
         } else {
 
-            waddch(win, ' ');
+            waddch(win, ' ');                                       //curses.h
         }
     }
 
-    wmove(win, row_start+3, column_start);
+    wmove(win, row_start+3, column_start);                          //curses.h
 
     // print board column borders
     for(int k = 0; k < 25; k++) {
 
         if(k == 0 || k == 8 || k == 16 || k == 24) {
 
-            waddch(win, '#');
+            waddch(win, '#');                                       //curses.h
         } else if(board_type == GAME_BOARD && k == 4) {
             switch(bocan::Game::Get().board.at(0)) {
                 case EMPTY:
-                    waddch(win, ' ');
+                    waddch(win, ' ');                               //curses.h
                     break;
                 case PLAYER_X_POS:
-                    waddch(win, 'X');
+                    waddch(win, 'X');                               //curses.h
                     break;
                 case PLAYER_O_POS:
-                    waddch(win, 'O');
+                    waddch(win, 'O');                               //curses.h
                     break;
             }
         } else if(board_type == GAME_BOARD && k == 12) {
             switch(bocan::Game::Get().board.at(1)) {
                 case EMPTY:
-                    waddch(win, ' ');
+                    waddch(win, ' ');                               //curses.h
                     break;
                 case PLAYER_X_POS:
-                    waddch(win, 'X');
+                    waddch(win, 'X');                               //curses.h
                     break;
                 case PLAYER_O_POS:
-                    waddch(win, 'O');
+                    waddch(win, 'O');                               //curses.h
                     break;
             }
         } else if(board_type == GAME_BOARD && k == 20) {
             switch(bocan::Game::Get().board.at(2)) {
                 case EMPTY:
-                    waddch(win, ' ');
+                    waddch(win, ' ');                               //curses.h
                     break;
                 case PLAYER_X_POS:
-                    waddch(win, 'X');
+                    waddch(win, 'X');                               //curses.h
                     break;
                 case PLAYER_O_POS:
-                    waddch(win, 'O');
+                    waddch(win, 'O');                               //curses.h
                     break;
             }
         } else if(board_type == HELP_BOARD && k == 4) {
 
-            waddch(win, '1');
+            waddch(win, '1');                                       //curses.h
         } else if(board_type == HELP_BOARD && k == 12) {
 
-            waddch(win, '2');
+            waddch(win, '2');                                       //curses.h
         } else if(board_type == HELP_BOARD && k == 20) {
 
-            waddch(win, '3');
+            waddch(win, '3');                                       //curses.h
         } else {
 
-            waddch(win, ' ');
+            waddch(win, ' ');                                       //curses.h
         }
     }
 
@@ -401,10 +409,10 @@ void Printer::PrintBoard(int board_type) {
 
         if(k == 0 || k == 8 || k == 16 || k == 24) {
 
-            waddch(win, '#');
+            waddch(win, '#');                                       //curses.h
         } else {
 
-            waddch(win, ' ');
+            waddch(win, ' ');                                       //curses.h
         }
     }
 
@@ -413,7 +421,7 @@ void Printer::PrintBoard(int board_type) {
     // print board row borders
     for(int j = 0; j < 25; j++) {
     
-        waddch(win, '#'); 
+        waddch(win, '#');                                           //curses.h
     }
 
     wmove(win, row_start+6, column_start);
@@ -423,10 +431,10 @@ void Printer::PrintBoard(int board_type) {
 
         if(k == 0 || k == 8 || k == 16 || k == 24) {
 
-            waddch(win, '#');
+            waddch(win, '#');                                       //curses.h
         } else {
 
-            waddch(win, ' ');
+            waddch(win, ' ');                                       //curses.h
         }
     }
 
@@ -437,55 +445,55 @@ void Printer::PrintBoard(int board_type) {
 
         if(k == 0 || k == 8 || k == 16 || k == 24) {
 
-            waddch(win, '#');
+            waddch(win, '#');                                       //curses.h
         } else if(board_type == GAME_BOARD && k == 4) {
             switch(bocan::Game::Get().board.at(3)) {
                 case EMPTY:
-                    waddch(win, ' ');
+                    waddch(win, ' ');                               //curses.h
                     break;
                 case PLAYER_X_POS:
-                    waddch(win, 'X');
+                    waddch(win, 'X');                               //curses.h
                     break;
                 case PLAYER_O_POS:
-                    waddch(win, 'O');
+                    waddch(win, 'O');                               //curses.h
                     break;
             }
         } else if(board_type == GAME_BOARD && k == 12) {
             switch(bocan::Game::Get().board.at(4)) {
                 case EMPTY:
-                    waddch(win, ' ');
+                    waddch(win, ' ');                               //curses.h
                     break;
                 case PLAYER_X_POS:
-                    waddch(win, 'X');
+                    waddch(win, 'X');                               //curses.h
                     break;
                 case PLAYER_O_POS:
-                    waddch(win, 'O');
+                    waddch(win, 'O');                               //curses.h
                     break;
             }
         } else if(board_type == GAME_BOARD && k == 20) {
             switch(bocan::Game::Get().board.at(5)) {
                 case EMPTY:
-                    waddch(win, ' ');
+                    waddch(win, ' ');                               //curses.h
                     break;
                 case PLAYER_X_POS:
-                    waddch(win, 'X');
+                    waddch(win, 'X');                               //curses.h
                     break;
                 case PLAYER_O_POS:
-                    waddch(win, 'O');
+                    waddch(win, 'O');                               //curses.h
                     break;
             }
         } else if(board_type == HELP_BOARD && k == 4) {
 
-            waddch(win, '4');
+            waddch(win, '4');                                       //curses.h
         } else if(board_type == HELP_BOARD && k == 12) {
 
-            waddch(win, '5');
+            waddch(win, '5');                                       //curses.h
         } else if(board_type == HELP_BOARD && k == 20) {
 
-            waddch(win, '6');
+            waddch(win, '6');                                       //curses.h
         } else {
 
-            waddch(win, ' ');
+            waddch(win, ' ');                                       //curses.h
         }
     }
 
@@ -496,10 +504,10 @@ void Printer::PrintBoard(int board_type) {
 
         if(k == 0 || k == 8 || k == 16 || k == 24) {
 
-            waddch(win, '#');
+            waddch(win, '#');                                       //curses.h
         } else {
 
-            waddch(win, ' ');
+            waddch(win, ' ');                                       //curses.h
         }
     }
 
@@ -508,7 +516,7 @@ void Printer::PrintBoard(int board_type) {
     // print board row borders
     for(int j = 0; j < 25; j++) {
     
-        waddch(win, '#'); 
+        waddch(win, '#');                                           //curses.h
     }
 
     wmove(win, row_start+10, column_start);
@@ -518,10 +526,10 @@ void Printer::PrintBoard(int board_type) {
 
         if(k == 0 || k == 8 || k == 16 || k == 24) {
 
-            waddch(win, '#');
+            waddch(win, '#');                                       //curses.h
         } else {
 
-            waddch(win, ' ');
+            waddch(win, ' ');                                       //curses.h
         }
     }
 
@@ -532,55 +540,55 @@ void Printer::PrintBoard(int board_type) {
 
         if(k == 0 || k == 8 || k == 16 || k == 24) {
 
-            waddch(win, '#');
+            waddch(win, '#');                                       //curses.h
         } else if(board_type == GAME_BOARD && k == 4) {
             switch(bocan::Game::Get().board.at(6)) {
                 case EMPTY:
-                    waddch(win, ' ');
+                    waddch(win, ' ');                               //curses.h
                     break;
                 case PLAYER_X_POS:
-                    waddch(win, 'X');
+                    waddch(win, 'X');                               //curses.h
                     break;
                 case PLAYER_O_POS:
-                    waddch(win, 'O');
+                    waddch(win, 'O');                               //curses.h
                     break;
             }
         } else if(board_type == GAME_BOARD && k == 12) {
             switch(bocan::Game::Get().board.at(7)) {
                 case EMPTY:
-                    waddch(win, ' ');
+                    waddch(win, ' ');                               //curses.h
                     break;
                 case PLAYER_X_POS:
-                    waddch(win, 'X');
+                    waddch(win, 'X');                               //curses.h
                     break;
                 case PLAYER_O_POS:
-                    waddch(win, 'O');
+                    waddch(win, 'O');                               //curses.h
                     break;
             }
         } else if(board_type == GAME_BOARD && k == 20) {
             switch(bocan::Game::Get().board.at(8)) {
                 case EMPTY:
-                    waddch(win, ' ');
+                    waddch(win, ' ');                               //curses.h
                     break;
                 case PLAYER_X_POS:
-                    waddch(win, 'X');
-                    break;
+                    waddch(win, 'X');                               //curses.h
+                    break;  
                 case PLAYER_O_POS:
-                    waddch(win, 'O');
+                    waddch(win, 'O');                               //curses.h
                     break;
             }
         } else if(board_type == HELP_BOARD && k == 4) {
 
-            waddch(win, '7');
+            waddch(win, '7');                                       //curses.h
         } else if(board_type == HELP_BOARD && k == 12) {
 
-            waddch(win, '8');
+            waddch(win, '8');                                       //curses.h
         } else if (board_type == HELP_BOARD && k == 20) {
 
-            waddch(win, '9');
+            waddch(win, '9');                                       //curses.h
         } else {
 
-            waddch(win, ' ');
+            waddch(win, ' ');                                       //curses.h
         }
     }
 
@@ -591,10 +599,10 @@ void Printer::PrintBoard(int board_type) {
 
         if(k == 0 || k == 8 || k == 16 || k == 24) {
 
-            waddch(win, '#');
+            waddch(win, '#');                                       //curses.h
         } else {
 
-            waddch(win, ' ');
+            waddch(win, ' ');                                       //curses.h
         }
     }
 
@@ -603,10 +611,10 @@ void Printer::PrintBoard(int board_type) {
     // print board row borders
     for(int j = 0; j < 25; j++) {
     
-        waddch(win, '#'); 
+        waddch(win, '#');                                           //curses.h
     }
 
-    wrefresh(win); 
+    wrefresh(win);                                                  //curses.h
 }
 
 // brief Prints the console queue to the console window.
@@ -614,20 +622,20 @@ void Printer::PrintBoard(int board_type) {
 // return None.
 void Printer::PrintConsole() {
 
-    werase(win_console);
-    wborder(win_console, 0, 0, 0, 0, 0, 0, 0, 0);
+    werase(win_console);                                                                        //curses.h
+    wborder(win_console, 0, 0, 0, 0, 0, 0, 0, 0);                                               //curses.h
 
-    wmove(win_console, 1, 1);
-    static_cast<void> ( waddstr(win_console, ">[2023] [MATTHEW BUCHANAN] [BOCAN SOFTWARE]") );
+    wmove(win_console, 1, 1);                                                                   //curses.h
+    static_cast<void> ( waddstr(win_console, ">[2023] [MATTHEW BUCHANAN] [BOCAN SOFTWARE]") );  //curses.h
 
     int i = 2;
 
     for(auto s : m_console_queue) {
-        wmove(win_console, i, 1);
-        static_cast<void> ( waddstr(win_console, s.c_str()) );
+        wmove(win_console, i, 1);                                                               //curses.h
+        static_cast<void> ( waddstr(win_console, s.c_str()) );                                  //curses.h
         i++;
     }
-    wrefresh(win_console);
+    wrefresh(win_console);                                                                      //curses.h
 }
 
 // brief Prints the player turn window.
@@ -635,23 +643,23 @@ void Printer::PrintConsole() {
 // return None.
 void Printer::PrintTurn() {
 
-    wmove(win_turn, 2, 5);
+    wmove(win_turn, 2, 5);                                                                      //curses.h
 
     switch(bocan::Game::Get().m_player_turn) {
         case START_GAME:
-            static_cast<void> ( waddstr(win_turn, " ") );
+            static_cast<void> ( waddstr(win_turn, " ") );                                       //curses.h
             break;
         case PLAYER_X_TURN:
-            static_cast<void> ( waddstr(win_turn, "*** PLAYER 'X' TURN (YOU) ***") );
+            static_cast<void> ( waddstr(win_turn, "*** PLAYER 'X' TURN (YOU) ***") );           //curses.h
             break;
         case PLAYER_O_TURN:
-            static_cast<void> ( waddstr(win_turn, "*** PLAYER 'O' TURN (CPU) ***") );
+            static_cast<void> ( waddstr(win_turn, "*** PLAYER 'O' TURN (CPU) ***") );           //curses.h
             break;
         default:
-            static_cast<void> ( waddstr(win_turn, "***  ERROR  ERROR  ERROR  ***") );
+            static_cast<void> ( waddstr(win_turn, "***  ERROR  ERROR  ERROR  ***") );           //curses.h
     }
 
-    wrefresh(win_turn);
+    wrefresh(win_turn);                                                                         //curses.h
 }
 
 // brief Prints the help window.
@@ -661,26 +669,26 @@ void Printer::PrintHelp() {
 
     PrintBoard(HELP_BOARD);
 
-    wmove(win_help, 2, 37);
-    static_cast<void> ( waddstr(win_help, "ABOUT THE GAME:") );
+    wmove(win_help, 2, 37);                                                                                             //curses.h
+    static_cast<void> ( waddstr(win_help, "ABOUT THE GAME:") );                                                         //curses.h
 
-    wmove(win_help, 4, 37);
-    static_cast<void> ( waddstr(win_help, "THE GAME IS TIC-TAC-TOE. FIRST TO GET THREE IN A ROW WINS THE MATCH.") );
+    wmove(win_help, 4, 37);                                                                                             //curses.h
+    static_cast<void> ( waddstr(win_help, "THE GAME IS TIC-TAC-TOE. FIRST TO GET THREE IN A ROW WINS THE MATCH.") );    //curses.h
 
-    wmove(win_help, 6, 37);
-    static_cast<void> ( waddstr(win_help, "BEST THREE OUT OF FIVE MATCHES WINS THE GAME.") );
+    wmove(win_help, 6, 37);                                                                                             //curses.h
+    static_cast<void> ( waddstr(win_help, "BEST THREE OUT OF FIVE MATCHES WINS THE GAME.") );                           //curses.h
 
-    wmove(win_help, 8, 37);
-    static_cast<void> ( waddstr(win_help, "THE FIRST TURN TO MOVE WILL ALTERNATE EVERY MATCH.") );
+    wmove(win_help, 8, 37);                                                                                             //curses.h
+    static_cast<void> ( waddstr(win_help, "THE FIRST TURN TO MOVE WILL ALTERNATE EVERY MATCH.") );                      //curses.h
 
-    wmove(win_help, 10, 37);
-    static_cast<void> ( waddstr(win_help, "PLAYER 'X' STARTS THE FIRST MATCH.") );
+    wmove(win_help, 10, 37);                                                                                            //curses.h
+    static_cast<void> ( waddstr(win_help, "PLAYER 'X' STARTS THE FIRST MATCH.") );                                      //curses.h
 
-    wmove(win_help, 12, 37);
-    static_cast<void> ( waddstr(win_help, "TO MOVE, ENTER THE CORRESPONDING CELL NUMBER IN THE CONSOLE.") );
+    wmove(win_help, 12, 37);                                                                                            //curses.h
+    static_cast<void> ( waddstr(win_help, "TO MOVE, ENTER THE CORRESPONDING CELL NUMBER IN THE CONSOLE.") );            //curses.h
 
-    wmove(win_help, 14, 37);
-    static_cast<void> ( waddstr(win_help, "TO QUIT THE GAME AT ANYTIME, PRESS 'Q'.") );
+    wmove(win_help, 14, 37);                                                                                            //curses.h
+    static_cast<void> ( waddstr(win_help, "TO QUIT THE GAME AT ANYTIME, PRESS 'Q'.") );                                 //curses.h
 
-    wrefresh(win_help);
+    wrefresh(win_help);                                                                                                 //curses.h
 }
