@@ -20,10 +20,6 @@
 // SEE THE LICENSE FOR THE SPECIFIC LANGUAGE GOVERNING PERMISSIONS AND
 // LIMITATIONS UNDER THE LICENSE.
 
-#include <iostream>
-using std::cout;
-using std::endl;
-
 #include "./game/game.hpp"
 
 
