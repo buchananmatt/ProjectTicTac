@@ -31,6 +31,18 @@ using bocan::Game;
 // brief Singleton instance of the Game class object.
 Game Game::s_instance;
 
+void Game::DebugTest() {
+
+    Start();
+    GameLoop();
+//    printer.SetupScreen();
+//    printer.ResetScreen();
+//    printer.RefreshScreen();
+//    printer.SetConsoleOutput(START_GAME);
+//    printer.GetConsoleInput();
+    printer.ExitScreen();
+}
+
 //
 //
 //
@@ -49,7 +61,7 @@ bool Game::Start() {
     m_o_wins = 0;
 
     // reset board state
-    for(auto& i : board) {
+    for(auto i : board) {
         i = EMPTY;
     }
 
@@ -72,8 +84,21 @@ void Game::GameLoop() {
 
         // setup the match
         m_match = i + 1;
-        m_match_end = false;
+        m_match_end = START_GAME;
         bool player_x_final_match = false;
+
+        // clear the board
+        for(int i = 0; i < board.size(); i++) {
+            board.at(i) = EMPTY;
+        }
+
+        // update the screen
+        printer.RefreshScreen();
+
+        // check to see if there is an early game winner
+        if(m_x_wins > 2 || m_o_wins > 2) {
+            break;
+        }
 
         // check to see who begins final match
         if(m_match == 5 && m_x_wins < m_o_wins) 
@@ -110,35 +135,9 @@ void Game::GameLoop() {
                     break;
             }
         } while(!m_match_end);
-    
-        // determine match winner
-        for(auto i : board) {
 
-            if( // check horizontal win
-                (board.at(i) == board.at(i+1) && board.at(i) == board.at(i+2)) ||
-                // check vertical win
-                (board.at(i) == board.at(i+3) && board.at(i) == board.at(i+6)) ||
-                // check right diagonal win
-                (board.at(i) == board.at(i+4) && board.at(i) == board.at(i+8)) ||
-                // check left diagonal win
-                (board.at(i) == board.at(i+2) && board.at(i) == board.at(i+4)) ) {
-
-                switch(i) {
-                    case PLAYER_X_POS:
-                        printer.SetConsoleOutput(PLAYER_X_MATCH_WIN);
-                        m_x_wins++;
-                        break;
-                    case PLAYER_O_POS:
-                        printer.SetConsoleOutput(PLAYER_O_MATCH_WIN);
-                        m_o_wins++;
-                        break;
-                }
-            } else {
-                printer.SetConsoleOutput(MATCH_TIE);
-                m_x_wins++;
-                m_o_wins++;
-            }
-        }
+        // break from for loop if player quit
+        if(m_match_end == PLAYER_QUIT) break;
     }
 }
 
@@ -147,7 +146,49 @@ void Game::GameLoop() {
 //
 bool Game::EndGame() {
 
+    if(m_match_end == PLAYER_QUIT) {
+        printer.SetConsoleOutput(PLAYER_QUIT);
+        printer.SetConsoleOutput(GAME_EXIT);
+        printer.ExitScreen();
+        return true;
+    }
+    char input;
+    bool game_over = false;
+    bool error = false;
 
+    if(m_x_wins > m_o_wins) {
+        printer.SetConsoleOutput(PLAYER_X_GAME_WIN);
+        
+    } else if (m_x_wins == m_o_wins) {
+        printer.SetConsoleOutput(GAME_TIE);
+
+    } else {
+        printer.SetConsoleOutput(PLAYER_O_GAME_WIN);
+    }
+
+    // check for user exit or play again
+    do {
+        error = false;
+        printer.SetConsoleOutput(END_GAME);
+        input = printer.GetConsoleInput();
+        switch(input) {
+            case 'y':
+            case 'Y':
+                game_over = false;
+                break;
+            case 'n':
+            case 'N':
+                game_over = true;
+                printer.SetConsoleOutput(GAME_EXIT);
+                printer.ExitScreen();
+                break;
+            default:
+                printer.SetConsoleOutput(INVALID_INPUT);
+                error = true;
+                break;
+        }
+    } while (error);
+    return game_over;
 }
 
 //
@@ -162,23 +203,43 @@ void Game::Player_X_Turn() {
         printer.SetConsoleOutput(PLAYER_X_TURN);
         char c_move = printer.GetConsoleInput();
         int move = c_move - '0';
+        // error check user input
+        switch(c_move) {
+            case 'q':
+            case 'Q':
+                m_match_end = PLAYER_QUIT;
+                break;
 
-        if(board.at(move-1) != EMPTY) {
-            printer.SetConsoleOutput(INVALID_MOVE);
-        } else {
-            board.at(move-1) = PLAYER_X_POS;
-            printer.SetConsoleOutput(PLAYER_X_MOVE);
-            valid_move = true;
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+
+                // check if board position is occupied
+                if(board.at(move-1) != EMPTY) {
+                    printer.SetConsoleOutput(INVALID_MOVE);
+                    valid_move = false;
+
+                } else {
+                    board.at(move-1) = PLAYER_X_POS;
+                    printer.SetConsoleOutput(PLAYER_X_MOVE, move);
+                    valid_move = true;
+                }
+                break;
+
+            default:
+                printer.SetConsoleOutput(INVALID_MOVE);
+                valid_move = false;
+                break;
         }
-    } while(!valid_move);
 
-    // check for any empty spaces left
-    bool empty_space_flag = false;
-    for(auto i : board) {
-        if(i == EMPTY) empty_space_flag = true;
-    }
-    if(empty_space_flag == true)    m_match_end = false;
-    else                            m_match_end = true;
+    } while(!valid_move);
+    Check_Match_Win();
 }
 
 //
@@ -193,19 +254,61 @@ void Game::Player_O_Turn() {
 
     // initial logic for opposing player
     bool move_flag = false;
-    for(auto i : board) {
-        if(i == EMPTY && move_flag == false) {
+    for(int i = 0; i < board.size(); i++) {
+        if(board.at(i) == EMPTY && move_flag == false) {
             board.at(i) = PLAYER_O_POS;
-            printer.SetConsoleOutput(PLAYER_O_MOVE);
+            printer.SetConsoleOutput(PLAYER_O_MOVE, i+1);
             move_flag = true;
         } 
     }
+    Check_Match_Win();
+}
 
+//
+//
+//
+void Game::Check_Match_Win() {
+
+    // check if player quit the game
+    if(m_match_end == PLAYER_QUIT) 
+        return;
+    
     // check for any empty spaces left
     bool empty_space_flag = false;
-    for(auto i : board) {
-        if(i == EMPTY) empty_space_flag = true;
+    for(int i = 0; i < board.size(); i++) {
+        if(board.at(i) == EMPTY) empty_space_flag = true;
     }
-    if(empty_space_flag == true)    m_match_end = false;
-    else                            m_match_end = true;
+
+    // determine match winner
+    if( // check for horizontal wins
+        (board.at(0) == board.at(1) && board.at(0) == board.at(2) && board.at(0) != EMPTY) ||
+        (board.at(3) == board.at(4) && board.at(3) == board.at(5) && board.at(3) != EMPTY) ||
+        (board.at(6) == board.at(7) && board.at(6) == board.at(8) && board.at(6) != EMPTY) ||
+        // check for vertical wins
+        (board.at(0) == board.at(3) && board.at(0) == board.at(6) && board.at(0) != EMPTY) ||
+        (board.at(1) == board.at(4) && board.at(1) == board.at(7) && board.at(1) != EMPTY) ||
+        (board.at(2) == board.at(5) && board.at(2) == board.at(8) && board.at(2) != EMPTY) ||
+        // check for right diagonal win
+        (board.at(0) == board.at(4) && board.at(0) == board.at(8) && board.at(0) != EMPTY) ||
+        // check for left diagonal win
+        (board.at(2) == board.at(4) && board.at(2) == board.at(6) && board.at(2) != EMPTY) ) {
+
+        switch(m_player_turn) {
+            case PLAYER_X_TURN:
+                printer.SetConsoleOutput(PLAYER_X_MATCH_WIN);
+                m_x_wins++;
+                m_match_end = PLAYER_X_MATCH_WIN;
+                break;
+
+            case PLAYER_O_TURN:
+                printer.SetConsoleOutput(PLAYER_O_MATCH_WIN);
+                m_o_wins++;
+                m_match_end = PLAYER_O_MATCH_WIN;
+        }
+    } else if(!empty_space_flag) {
+        printer.SetConsoleOutput(MATCH_TIE);
+        m_x_wins++;
+        m_o_wins++;
+        m_match_end = MATCH_TIE;
+    } 
 }

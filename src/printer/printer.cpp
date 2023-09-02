@@ -23,6 +23,8 @@
 #include <deque>
 #include <string>
 #include <sstream>
+#include <thread>
+#include <chrono>
 
 #include <ncurses.h>
 
@@ -80,7 +82,7 @@ void Printer::SetupScreen() {
     m_help.y_height = 18;
     m_help.x_length = 106;
 
-    m_max_console_size = m_console.y_height - 2;
+    m_max_console_size = m_console.y_height - 4;
 
     initscr();
     cbreak(); 
@@ -131,6 +133,14 @@ void Printer::RefreshScreen() {
 //
 //
 //
+void Printer::ExitScreen() {
+
+    endwin();
+}
+
+//
+//
+//
 char Printer::GetConsoleInput() {
 
     wmove(win_console, 24, 1);
@@ -139,6 +149,7 @@ char Printer::GetConsoleInput() {
 
     return static_cast<char> (input);
 }
+
 //
 //
 //
@@ -146,54 +157,73 @@ void Printer::SetConsoleOutput(int event) {
     std::ostringstream output;
     switch(event) {
         case START_GAME:
-            output << "PRESS 'ENTER' TO START THE GAME, OR PRESS 'Q' TO QUIT.\n";
+            output << ">PRESS 'ENTER' TO START THE GAME, OR PRESS 'Q' TO QUIT.";
             m_console_queue.push_back(output.str());
             break;
         case PLAYER_O_TURN:
-            output << "WAITING FOR PLAYER 'O'...\n";
+            PrintTurn();
+            output << ">WAITING FOR PLAYER 'O'...";
             m_console_queue.push_back(output.str());
             break;
         case PLAYER_X_TURN:
-            output << "WAITING FOR PLAYER 'X'...\n";
+            PrintTurn();
+            output << ">WAITING FOR PLAYER 'X'...";
             m_console_queue.push_back(output.str());
             break;
         case PLAYER_O_MATCH_WIN:
-            output << "PLAYER 'O' WINS MATCH " << bocan::Game::Get().m_match << ".\n";
+            output << ">PLAYER 'O' WINS MATCH " << bocan::Game::Get().m_match << ".";
             m_console_queue.push_back(output.str());
             break;
         case PLAYER_X_MATCH_WIN:
-            output << "PLAYER 'X' WINS MATCH " << bocan::Game::Get().m_match << ".\n";
+            output << ">PLAYER 'X' WINS MATCH " << bocan::Game::Get().m_match << ".";
             m_console_queue.push_back(output.str());
             break;
         case MATCH_TIE:
-            output << "MATCH " << bocan::Game::Get().m_match << " IS A TIE!\n";
+            output << ">MATCH " << bocan::Game::Get().m_match << " IS A TIE!";
             m_console_queue.push_back(output.str());
             break;
         case PLAYER_O_GAME_WIN:
-            output << "PLAYER 'O' WINS THE GAME!\n";
+            output << ">PLAYER 'O' WINS THE GAME!";
             m_console_queue.push_back(output.str());
             break;
         case PLAYER_X_GAME_WIN:
-            output << "PLAYER 'X' WINS THE GAME!\n";
+            output << ">PLAYER 'X' WINS THE GAME!";
+            m_console_queue.push_back(output.str());
+            break;
+        case GAME_TIE:
+            output << ">THE GAME IS A TIE!";
             m_console_queue.push_back(output.str());
             break;
         case END_GAME:
-            output << "PRESS 'ENTER' TO PLAY AGAIN, OR PRESS 'Q' TO QUIT.\n";
+            output << ">DO YOU WANT TO PLAY AGAIN? (Y/N).";
+            m_console_queue.push_back(output.str());
+            break;
+        case PLAYER_QUIT:
+            output << ">PLAYER 'X' QUIT THE GAME.";
             m_console_queue.push_back(output.str());
             break;
         case INVALID_MOVE:
-            output << "INVALID MOVE. TRY AGAIN.\n";
+            output << ">INVALID MOVE. TRY AGAIN.";
+            m_console_queue.push_back(output.str());
+            break;
+        case INVALID_INPUT:
+            output << ">INVALID INPUT.";
+            m_console_queue.push_back(output.str());
+            break;
+        case GAME_EXIT:
+            output << ">EXITING GAME...";
             m_console_queue.push_back(output.str());
             break;
         case ERROR:
-            output << "CRITICAL RUNTIME ERROR...\n";
+            output << ">CRITICAL RUNTIME ERROR...";
             m_console_queue.push_back(output.str());
             break;
     }
-    if(m_console_queue.size() > m_max_console_size) {
+    while(m_console_queue.size() > m_max_console_size) {
         m_console_queue.pop_front();
     }
     PrintConsole();
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
 //
@@ -203,18 +233,20 @@ void Printer::SetConsoleOutput(int event, int pos) {
     std::ostringstream output;
     switch(event) {
         case PLAYER_O_MOVE:
-            output << "PLAYER 'O' MOVES TO POSITION " << pos << ".\n";
+            output << ">PLAYER 'O' MOVES TO POSITION " << pos << ".";
             m_console_queue.push_back(output.str());
             break;
         case PLAYER_X_MOVE:
-            output << "PLAYER 'X' MOVES TO POSITION " << pos << ".\n";
+            output << ">PLAYER 'X' MOVES TO POSITION " << pos << ".";
             m_console_queue.push_back(output.str());
             break;
     }
-    if(m_console_queue.size() < m_max_console_size) {
+    while(m_console_queue.size() > m_max_console_size) {
         m_console_queue.pop_front();
     }
     PrintConsole();
+    PrintBoard(GAME_BOARD);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
 //
@@ -232,11 +264,11 @@ void Printer::PrintTitle() {
 //
 void Printer::PrintScore() {
 
-    wmove(win_score_game, 2, 8);
-    static_cast<void> ( waddstr(win_score_game, "MATCH") );
+    wmove(win_score_game, 2, 7);
+    static_cast<void> ( waddstr(win_score_game, "MATCH#") );
 
     wmove(win_score_game, 4, 7);
-    const char c_match = bocan::Game::Get().m_match + '0';
+    char c_match = bocan::Game::Get().m_match + '0';
     static_cast<void> ( waddch(win_score_game, c_match) );
     static_cast<void> ( waddstr(win_score_game, " // 5") );
 
@@ -244,14 +276,14 @@ void Printer::PrintScore() {
     static_cast<void> ( waddstr(win_score_x, "'X' WINS") );
 
     wmove(win_score_x, 4, 9);
-    const char c_x_wins = bocan::Game::Get().m_x_wins + '0';
+    char c_x_wins = bocan::Game::Get().m_x_wins + '0';
     static_cast<void> ( waddch(win_score_x, c_x_wins) );
 
     wmove(win_score_o, 2, 6);
-    static_cast<void> ( waddstr(win_score_o, "'Y' WINS") );
+    static_cast<void> ( waddstr(win_score_o, "'O' WINS") );
 
     wmove(win_score_o, 4, 9);
-    const char c_o_wins = bocan::Game::Get().m_o_wins + '0';
+    char c_o_wins = bocan::Game::Get().m_o_wins + '0';
     static_cast<void> ( waddch(win_score_o, c_o_wins) );
 
     wrefresh(win_score_game);
@@ -262,7 +294,7 @@ void Printer::PrintScore() {
 //
 //
 //
-void Printer::PrintBoard(int board_type) {
+void Printer::PrintBoard(int board_type) { 
 
     WINDOW* win;
     int row_start;
@@ -282,7 +314,7 @@ void Printer::PrintBoard(int board_type) {
     // print board row borders
     for(int j = 0; j < 25; j++) {
     
-        waddch(win_board, '#'); 
+        waddch(win, '#'); 
     }
 
 
@@ -308,7 +340,7 @@ void Printer::PrintBoard(int board_type) {
         if(k == 0 || k == 8 || k == 16 || k == 24) {
 
             waddch(win, '#');
-        } else if(board_type == GAME_BOARD && k == 5) {
+        } else if(board_type == GAME_BOARD && k == 4) {
             switch(bocan::Game::Get().board.at(0)) {
                 case EMPTY:
                     waddch(win, ' ');
@@ -320,7 +352,7 @@ void Printer::PrintBoard(int board_type) {
                     waddch(win, 'O');
                     break;
             }
-        } else if(board_type == GAME_BOARD && k == 13) {
+        } else if(board_type == GAME_BOARD && k == 12) {
             switch(bocan::Game::Get().board.at(1)) {
                 case EMPTY:
                     waddch(win, ' ');
@@ -332,7 +364,7 @@ void Printer::PrintBoard(int board_type) {
                     waddch(win, 'O');
                     break;
             }
-        } else if(board_type == GAME_BOARD && k == 21) {
+        } else if(board_type == GAME_BOARD && k == 20) {
             switch(bocan::Game::Get().board.at(2)) {
                 case EMPTY:
                     waddch(win, ' ');
@@ -403,7 +435,7 @@ void Printer::PrintBoard(int board_type) {
         if(k == 0 || k == 8 || k == 16 || k == 24) {
 
             waddch(win, '#');
-        } else if(board_type == GAME_BOARD && k == 5) {
+        } else if(board_type == GAME_BOARD && k == 4) {
             switch(bocan::Game::Get().board.at(3)) {
                 case EMPTY:
                     waddch(win, ' ');
@@ -415,7 +447,7 @@ void Printer::PrintBoard(int board_type) {
                     waddch(win, 'O');
                     break;
             }
-        } else if(board_type == GAME_BOARD && k == 13) {
+        } else if(board_type == GAME_BOARD && k == 12) {
             switch(bocan::Game::Get().board.at(4)) {
                 case EMPTY:
                     waddch(win, ' ');
@@ -427,7 +459,7 @@ void Printer::PrintBoard(int board_type) {
                     waddch(win, 'O');
                     break;
             }
-        } else if(board_type == GAME_BOARD && k == 21) {
+        } else if(board_type == GAME_BOARD && k == 20) {
             switch(bocan::Game::Get().board.at(5)) {
                 case EMPTY:
                     waddch(win, ' ');
@@ -439,13 +471,13 @@ void Printer::PrintBoard(int board_type) {
                     waddch(win, 'O');
                     break;
             }
-        } else if(HELP_BOARD && k == 4) {
+        } else if(board_type == HELP_BOARD && k == 4) {
 
             waddch(win, '4');
-        } else if(HELP_BOARD && k == 12) {
+        } else if(board_type == HELP_BOARD && k == 12) {
 
             waddch(win, '5');
-        } else if(HELP_BOARD && k == 20) {
+        } else if(board_type == HELP_BOARD && k == 20) {
 
             waddch(win, '6');
         } else {
@@ -498,7 +530,7 @@ void Printer::PrintBoard(int board_type) {
         if(k == 0 || k == 8 || k == 16 || k == 24) {
 
             waddch(win, '#');
-        } else if(board_type == GAME_BOARD && k == 5) {
+        } else if(board_type == GAME_BOARD && k == 4) {
             switch(bocan::Game::Get().board.at(6)) {
                 case EMPTY:
                     waddch(win, ' ');
@@ -510,7 +542,7 @@ void Printer::PrintBoard(int board_type) {
                     waddch(win, 'O');
                     break;
             }
-        } else if(board_type == GAME_BOARD && k == 13) {
+        } else if(board_type == GAME_BOARD && k == 12) {
             switch(bocan::Game::Get().board.at(7)) {
                 case EMPTY:
                     waddch(win, ' ');
@@ -522,7 +554,7 @@ void Printer::PrintBoard(int board_type) {
                     waddch(win, 'O');
                     break;
             }
-        } else if(board_type == GAME_BOARD && k == 21) {
+        } else if(board_type == GAME_BOARD && k == 20) {
             switch(bocan::Game::Get().board.at(8)) {
                 case EMPTY:
                     waddch(win, ' ');
@@ -534,13 +566,13 @@ void Printer::PrintBoard(int board_type) {
                     waddch(win, 'O');
                     break;
             }
-        } else if(HELP_BOARD && k == 4) {
+        } else if(board_type == HELP_BOARD && k == 4) {
 
             waddch(win, '7');
-        } else if(HELP_BOARD && k == 12) {
+        } else if(board_type == HELP_BOARD && k == 12) {
 
             waddch(win, '8');
-        } else if (HELP_BOARD && k == 20) {
+        } else if (board_type == HELP_BOARD && k == 20) {
 
             waddch(win, '9');
         } else {
@@ -571,7 +603,7 @@ void Printer::PrintBoard(int board_type) {
         waddch(win, '#'); 
     }
 
-    wrefresh(win_board);
+    wrefresh(win_board); 
 }
 
 //
@@ -579,8 +611,10 @@ void Printer::PrintBoard(int board_type) {
 //
 void Printer::PrintConsole() {
 
+    werase(win_console);
+    wborder(win_console, 0, 0, 0, 0, 0, 0, 0, 0);
+
     int i = 1;
-    const char* c;
 
     for(auto s : m_console_queue) {
         wmove(win_console, i, 1);
@@ -598,6 +632,9 @@ void Printer::PrintTurn() {
     wmove(win_turn, 2, 5);
 
     switch(bocan::Game::Get().m_player_turn) {
+        case START_GAME:
+            static_cast<void> ( waddstr(win_turn, " ") );
+            break;
         case PLAYER_X_TURN:
             static_cast<void> ( waddstr(win_turn, "*** PLAYER 'X' TURN (YOU) ***") );
             break;
@@ -635,6 +672,9 @@ void Printer::PrintHelp() {
 
     wmove(win_help, 12, 37);
     static_cast<void> ( waddstr(win_help, "TO MOVE, ENTER THE CELL NUMBER IN THE CONSOLE AND PRESS 'ENTER'.") );
+
+    wmove(win_help, 14, 37);
+    static_cast<void> ( waddstr(win_help, "[2023] [MATTHEW BUCHANAN] [BOCAN SOFTWARE]") );
 
     wrefresh(win_help);
 }

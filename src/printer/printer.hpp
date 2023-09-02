@@ -41,6 +41,7 @@ public:
     void SetupScreen();
     void ResetScreen();
     void RefreshScreen();
+    void ExitScreen();
 
     char GetConsoleInput();
     void SetConsoleOutput(int);

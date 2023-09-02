@@ -36,8 +36,12 @@ namespace bocan {
         MATCH_TIE,
         PLAYER_O_GAME_WIN,
         PLAYER_X_GAME_WIN,
+        GAME_TIE,
         END_GAME,
+        PLAYER_QUIT,
         INVALID_MOVE,
+        INVALID_INPUT,
+        GAME_EXIT,
         ERROR
     };
 

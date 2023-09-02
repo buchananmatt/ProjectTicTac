@@ -1,5 +1,5 @@
 CXX=clang++
-CXXFLAGS=-std=c++14
+CXXFLAGS=-std=gnu++14
 
 output: ./src/main.o ./src/game/game.o ./src/printer/printer.o
 	g++ -lncurses ./src/main.o ./src/game/game.o ./src/printer/printer.o -o ./bin/tictac.out
@@ -14,3 +14,6 @@ printer.o: ./src/printer/printer.cpp ./src/printer/printer.hpp ./src/game/gamest
 	g++ -c ./src/printer/printer.cpp ./bin/printer.o
 
 clean:
+
+debug:
+	g++ -std=gnu++14 -g -lncurses ./src/main.cpp ./src/game/game.cpp ./src/printer/printer.cpp -o ./bin/tictacdebug.out

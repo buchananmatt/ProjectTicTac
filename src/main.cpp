@@ -20,6 +20,9 @@
 // SEE THE LICENSE FOR THE SPECIFIC LANGUAGE GOVERNING PERMISSIONS AND
 // LIMITATIONS UNDER THE LICENSE.
 
+#include <iostream>
+using std::cout;
+using std::endl;
 
 #include "./game/game.hpp"
 
@@ -29,7 +32,7 @@ int main(int argc, char** argv) {
     auto& game = bocan::Game::Get();
 
     do {
-        if(game.Start())
+        if(game.Start()) 
             game.GameLoop();
 
     } while(!game.EndGame());

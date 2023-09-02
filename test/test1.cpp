@@ -135,6 +135,11 @@ int main(int argc, char** argv) {
     int g = waddch(win_console, '>');
     int h = wgetch(win_console);
 
+    wmove(win_console, 2, 1);
+    static_cast<void> ( waddch(win_console, static_cast<char> (h)) );
+
+    static_cast<void> ( wgetch(win_console) );
+
     endwin();
 /*                       *       *       *
                               1111111111222222
