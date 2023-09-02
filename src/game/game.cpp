@@ -241,76 +241,150 @@ void Game::Player_O_Turn() {
     printer.SetConsoleOutput(PLAYER_O_TURN);
 
     bool move_flag = false;
-
-    // opposing player scans for horizontal advantage/disadvantage
+    
+    // opposing player scans for horizontal advantage
     for(int i = 0; i < board.size(); i+=3) {
         if(move_flag) break;
-        if( board.at(i+0) == board.at(i+1) && board.at(i+0) != EMPTY && board.at(i+2) == EMPTY) {
+        if( board.at(i+0) == board.at(i+1) && board.at(i+0) == PLAYER_O_POS && board.at(i+2) == EMPTY) {
             board.at(i+2) = PLAYER_O_POS;
             printer.SetConsoleOutput(PLAYER_O_MOVE, i+3);
             move_flag = true;
         } else
-        if( board.at(i+1) == board.at(i+2) && board.at(i+1) != EMPTY && board.at(i+0) == EMPTY) {
+        if( board.at(i+1) == board.at(i+2) && board.at(i+1) == PLAYER_O_POS && board.at(i+0) == EMPTY) {
             board.at(i+0) = PLAYER_O_POS;
             printer.SetConsoleOutput(PLAYER_O_MOVE, i+1);
             move_flag = true;
         } else
-        if( board.at(i+0) == board.at(i+2) && board.at(i+0) != EMPTY && board.at(i+1) == EMPTY) {
+        if( board.at(i+0) == board.at(i+2) && board.at(i+0) == PLAYER_O_POS && board.at(i+1) == EMPTY) {
             board.at(i+1) = PLAYER_O_POS;
             printer.SetConsoleOutput(PLAYER_O_MOVE, i+2);
             move_flag = true;
         }
     }
 
-    // opposing player scans for vertical advantage/disadvantage
+    // opposing player scans for vertical advantage
     for(int i = 0; i < 3; i++) {
         if(move_flag) break;
-        if( board.at(i+0) == board.at(i+3) && board.at(i+0) != EMPTY && board.at(i+6) == EMPTY) {
+        if( board.at(i+0) == board.at(i+3) && board.at(i+0) == PLAYER_O_POS && board.at(i+6) == EMPTY) {
             board.at(i+6) = PLAYER_O_POS;
             printer.SetConsoleOutput(PLAYER_O_MOVE,i+7);
             move_flag = true;
         } else
-        if( board.at(i+3) == board.at(i+6) && board.at(i+3) != EMPTY && board.at(i+0) == EMPTY) {
+        if( board.at(i+3) == board.at(i+6) && board.at(i+3) == PLAYER_O_POS && board.at(i+0) == EMPTY) {
             board.at(i+0) = PLAYER_O_POS;
             printer.SetConsoleOutput(PLAYER_O_MOVE, i+1);
             move_flag = true;
         } else
-        if( board.at(i+0) == board.at(i+6) && board.at(i+0) != EMPTY && board.at(i+3) == EMPTY) {
+        if( board.at(i+0) == board.at(i+6) && board.at(i+0) == PLAYER_O_POS && board.at(i+3) == EMPTY) {
             board.at(i+3) = PLAYER_O_POS;
             printer.SetConsoleOutput(PLAYER_O_MOVE, i+4);
             move_flag = true;
         }
     }
 
-    // opposing player scans for right diagonal advantage/disadvantage
-    if(!move_flag && board.at(0) == board.at(4) && board.at(0) != EMPTY && board.at(8) == EMPTY) {
+    // opposing player scans for right diagonal advantage
+    if(!move_flag && board.at(0) == board.at(4) && board.at(0) == PLAYER_O_POS && board.at(8) == EMPTY) {
         board.at(8) = PLAYER_O_POS;
         printer.SetConsoleOutput(PLAYER_O_MOVE, 9);
         move_flag = true;
     } else
-    if(!move_flag && board.at(4) == board.at(8) && board.at(4) != EMPTY && board.at(0) == EMPTY) {
+    if(!move_flag && board.at(4) == board.at(8) && board.at(4) == PLAYER_O_POS && board.at(0) == EMPTY) {
         board.at(0) = PLAYER_O_POS;
         printer.SetConsoleOutput(PLAYER_O_MOVE, 1);
         move_flag = true;
     } else
-    if(!move_flag && board.at(0) == board.at(8) && board.at(0) != EMPTY && board.at(4) == EMPTY) {
+    if(!move_flag && board.at(0) == board.at(8) && board.at(0) == PLAYER_O_POS && board.at(4) == EMPTY) {
         board.at(4) = PLAYER_O_POS;
         printer.SetConsoleOutput(PLAYER_O_MOVE, 5);
         move_flag = true;
     }
 
-    // opposing player scans for left diagonal advantage/disadvantage
-    if(!move_flag && board.at(2) == board.at(4) && board.at(2) != EMPTY && board.at(6) == EMPTY) {
+    // opposing player scans for left diagonal advantage
+    if(!move_flag && board.at(2) == board.at(4) && board.at(2) == PLAYER_O_POS && board.at(6) == EMPTY) {
         board.at(6) = PLAYER_O_POS;
         printer.SetConsoleOutput(PLAYER_O_MOVE, 7);
         move_flag = true;
     } else
-    if(!move_flag && board.at(4) == board.at(6) && board.at(4) != EMPTY && board.at(2) == EMPTY) {
+    if(!move_flag && board.at(4) == board.at(6) && board.at(4) == PLAYER_O_POS && board.at(2) == EMPTY) {
         board.at(2) = PLAYER_O_POS;
         printer.SetConsoleOutput(PLAYER_O_MOVE, 8);
         move_flag = true;
     } else
-    if(!move_flag && board.at(2) == board.at(6) && board.at(2) != EMPTY && board.at(4) == EMPTY) {
+    if(!move_flag && board.at(2) == board.at(6) && board.at(2) == PLAYER_O_POS && board.at(4) == EMPTY) {
+        board.at(4) = PLAYER_O_POS;
+        printer.SetConsoleOutput(PLAYER_O_MOVE, 5);
+        move_flag = true;
+    }
+
+    // opposing player scans for horizontal disadvantage
+    for(int i = 0; i < board.size(); i+=3) {
+        if(move_flag) break;
+        if( board.at(i+0) == board.at(i+1) && board.at(i+0) == PLAYER_X_POS && board.at(i+2) == EMPTY) {
+            board.at(i+2) = PLAYER_O_POS;
+            printer.SetConsoleOutput(PLAYER_O_MOVE, i+3);
+            move_flag = true;
+        } else
+        if( board.at(i+1) == board.at(i+2) && board.at(i+1) == PLAYER_X_POS && board.at(i+0) == EMPTY) {
+            board.at(i+0) = PLAYER_O_POS;
+            printer.SetConsoleOutput(PLAYER_O_MOVE, i+1);
+            move_flag = true;
+        } else
+        if( board.at(i+0) == board.at(i+2) && board.at(i+0) == PLAYER_X_POS && board.at(i+1) == EMPTY) {
+            board.at(i+1) = PLAYER_O_POS;
+            printer.SetConsoleOutput(PLAYER_O_MOVE, i+2);
+            move_flag = true;
+        }
+    }
+
+    // opposing player scans for vertical disadvantage
+    for(int i = 0; i < 3; i++) {
+        if(move_flag) break;
+        if( board.at(i+0) == board.at(i+3) && board.at(i+0) == PLAYER_X_POS && board.at(i+6) == EMPTY) {
+            board.at(i+6) = PLAYER_O_POS;
+            printer.SetConsoleOutput(PLAYER_O_MOVE,i+7);
+            move_flag = true;
+        } else
+        if( board.at(i+3) == board.at(i+6) && board.at(i+3) == PLAYER_X_POS && board.at(i+0) == EMPTY) {
+            board.at(i+0) = PLAYER_O_POS;
+            printer.SetConsoleOutput(PLAYER_O_MOVE, i+1);
+            move_flag = true;
+        } else
+        if( board.at(i+0) == board.at(i+6) && board.at(i+0) == PLAYER_X_POS && board.at(i+3) == EMPTY) {
+            board.at(i+3) = PLAYER_O_POS;
+            printer.SetConsoleOutput(PLAYER_O_MOVE, i+4);
+            move_flag = true;
+        }
+    }
+
+    // opposing player scans for right diagonal disadvantage
+    if(!move_flag && board.at(0) == board.at(4) && board.at(0) == PLAYER_X_POS && board.at(8) == EMPTY) {
+        board.at(8) = PLAYER_O_POS;
+        printer.SetConsoleOutput(PLAYER_O_MOVE, 9);
+        move_flag = true;
+    } else
+    if(!move_flag && board.at(4) == board.at(8) && board.at(4) == PLAYER_X_POS && board.at(0) == EMPTY) {
+        board.at(0) = PLAYER_O_POS;
+        printer.SetConsoleOutput(PLAYER_O_MOVE, 1);
+        move_flag = true;
+    } else
+    if(!move_flag && board.at(0) == board.at(8) && board.at(0) == PLAYER_X_POS && board.at(4) == EMPTY) {
+        board.at(4) = PLAYER_O_POS;
+        printer.SetConsoleOutput(PLAYER_O_MOVE, 5);
+        move_flag = true;
+    }
+
+    // opposing player scans for left diagonal disadvantage
+    if(!move_flag && board.at(2) == board.at(4) && board.at(2) == PLAYER_X_POS && board.at(6) == EMPTY) {
+        board.at(6) = PLAYER_O_POS;
+        printer.SetConsoleOutput(PLAYER_O_MOVE, 7);
+        move_flag = true;
+    } else
+    if(!move_flag && board.at(4) == board.at(6) && board.at(4) == PLAYER_X_POS && board.at(2) == EMPTY) {
+        board.at(2) = PLAYER_O_POS;
+        printer.SetConsoleOutput(PLAYER_O_MOVE, 8);
+        move_flag = true;
+    } else
+    if(!move_flag && board.at(2) == board.at(6) && board.at(2) == PLAYER_X_POS && board.at(4) == EMPTY) {
         board.at(4) = PLAYER_O_POS;
         printer.SetConsoleOutput(PLAYER_O_MOVE, 5);
         move_flag = true;

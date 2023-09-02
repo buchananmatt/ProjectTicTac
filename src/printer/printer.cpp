@@ -615,7 +615,7 @@ void Printer::PrintConsole() {
     wborder(win_console, 0, 0, 0, 0, 0, 0, 0, 0);
 
     wmove(win_console, 1, 1);
-    static_cast<void> ( waddstr(win_console, ">[2023] [MATTHEW BUCHANAN [BOCAN SOFTWARE]") );
+    static_cast<void> ( waddstr(win_console, ">[2023] [MATTHEW BUCHANAN] [BOCAN SOFTWARE]") );
 
     int i = 2;
 
