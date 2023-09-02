@@ -31,6 +31,7 @@ int main(int argc, char** argv) {
     cbreak();                           // curses.h
     noecho();                           // curses.h
     keypad(stdscr, true);               // curses.h
+//    start_color();
 
     WINDOW* win_title = newwin(7, 40, 2, 10);
 
@@ -120,7 +121,7 @@ int main(int argc, char** argv) {
     a = waddstr(win_help, "[2023] [MATTHEW BUCHANAN] [BOCAN SOFTWARE]");
 
     wmove(win_console, 1, 1);
-    int f = waddstr(win_console, ">PLAYER 'X' TURN");
+    int f = waddstr(win_console, "^[31>PLAYER 'X' TURN");
 
     wrefresh(win_board);
     wrefresh(win_title);
