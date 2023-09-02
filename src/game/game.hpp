@@ -34,7 +34,7 @@ public:
 
     static Game& Get() { return s_instance; }
 
-    bool Start();
+    void Start();
     void GameLoop();
     bool EndGame();
 

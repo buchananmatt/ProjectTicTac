@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
     auto& game = bocan::Game::Get();
 
     do {
-        if(game.Start()) 
+            game.Start();
             game.GameLoop();
 
     } while(!game.EndGame());

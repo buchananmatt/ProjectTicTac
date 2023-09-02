@@ -34,7 +34,7 @@ Game Game::s_instance;
 //
 //
 //
-bool Game::Start() {
+void Game::Start() {
 
     // setup the screen for the first game
     if(m_first_run) {
@@ -59,7 +59,7 @@ bool Game::Start() {
     printer.SetConsoleOutput(START_GAME);
 
     // wait for start from the user
-    return printer.GetConsoleInput();
+    static_cast <void> ( printer.GetConsoleInput() );
 }
 
 //
