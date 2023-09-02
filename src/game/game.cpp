@@ -49,8 +49,8 @@ void Game::Start() {
     m_o_wins = 0;
 
     // reset board state
-    for(auto i : board) {
-        i = EMPTY;
+    for(auto cell : board) {
+        cell = EMPTY;
     }
 
     // reset the screen
@@ -83,7 +83,7 @@ void Game::GameLoop() {
         // update the screen
         printer.RefreshScreen();
 
-        // check to see if there is an early game winner
+        // check for early game winner and break from for loop
         if(m_x_wins > 2 || m_o_wins > 2) {
             break;
         }
@@ -196,6 +196,7 @@ void Game::Player_X_Turn() {
             case 'q':
             case 'Q':
                 m_match_end = PLAYER_QUIT;
+                valid_move = true;
                 break;
 
             case '1':
@@ -263,8 +264,8 @@ void Game::Check_Match_Win() {
     
     // check for any empty spaces left
     bool empty_space_flag = false;
-    for(int i = 0; i < board.size(); i++) {
-        if(board.at(i) == EMPTY) empty_space_flag = true;
+    for(auto cell : board) {
+        if(cell == EMPTY) empty_space_flag = true;
     }
 
     // determine match winner

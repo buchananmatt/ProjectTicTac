@@ -82,7 +82,7 @@ void Printer::SetupScreen() {
     m_help.y_height = 18;
     m_help.x_length = 106;
 
-    m_max_console_size = m_console.y_height - 4;
+    m_max_console_size = m_console.y_height - 5;
 
     initscr();
     cbreak(); 
@@ -157,7 +157,7 @@ void Printer::SetConsoleOutput(int event) {
     std::ostringstream output;
     switch(event) {
         case START_GAME:
-            output << ">PRESS 'ENTER' TO START THE GAME, OR PRESS 'Q' TO QUIT.";
+            output << ">PRESS ANY KEY TO START THE GAME.";
             m_console_queue.push_back(output.str());
             break;
         case PLAYER_O_TURN:
@@ -223,7 +223,7 @@ void Printer::SetConsoleOutput(int event) {
         m_console_queue.pop_front();
     }
     PrintConsole();
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 //
@@ -246,7 +246,7 @@ void Printer::SetConsoleOutput(int event, int pos) {
     }
     PrintConsole();
     PrintBoard(GAME_BOARD);
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 //
@@ -264,8 +264,8 @@ void Printer::PrintTitle() {
 //
 void Printer::PrintScore() {
 
-    wmove(win_score_game, 2, 7);
-    static_cast<void> ( waddstr(win_score_game, "MATCH#") );
+    wmove(win_score_game, 2, 8);
+    static_cast<void> ( waddstr(win_score_game, "GAME") );
 
     wmove(win_score_game, 4, 7);
     char c_match = bocan::Game::Get().m_match + '0';
@@ -603,7 +603,7 @@ void Printer::PrintBoard(int board_type) {
         waddch(win, '#'); 
     }
 
-    wrefresh(win_board); 
+    wrefresh(win); 
 }
 
 //
@@ -614,7 +614,10 @@ void Printer::PrintConsole() {
     werase(win_console);
     wborder(win_console, 0, 0, 0, 0, 0, 0, 0, 0);
 
-    int i = 1;
+    wmove(win_console, 1, 1);
+    static_cast<void> ( waddstr(win_console, ">[2023] [MATTHEW BUCHANAN [BOCAN SOFTWARE]") );
+
+    int i = 2;
 
     for(auto s : m_console_queue) {
         wmove(win_console, i, 1);
@@ -656,25 +659,25 @@ void Printer::PrintHelp() {
     PrintBoard(HELP_BOARD);
 
     wmove(win_help, 2, 37);
-    static_cast<void> ( waddstr(win_help, "THE GAME IS TIC-TAC-TOE. FIRST TO GET THREE IN A ROW WINS THE MATCH.") );
+    static_cast<void> ( waddstr(win_help, "ABOUT THE GAME:") );
 
     wmove(win_help, 4, 37);
-    static_cast<void> ( waddstr(win_help, "BEST 3 OUT OF FIVE MATCHES WINS THE GAME.") );
+    static_cast<void> ( waddstr(win_help, "THE GAME IS TIC-TAC-TOE. FIRST TO GET THREE IN A ROW WINS THE MATCH.") );
 
     wmove(win_help, 6, 37);
-    static_cast<void> ( waddstr(win_help, "PLAYER 'X' WILL TAKE THE FIRST MOVE OF THE FIRST MATCH.") );
+    static_cast<void> ( waddstr(win_help, "BEST THREE OUT OF FIVE MATCHES WINS THE GAME.") );
 
     wmove(win_help, 8, 37);
-    static_cast<void> ( waddstr(win_help, "THE FIRST PLAYER TO MOVE WILL ALTERNATE EVERY MATCH.") );
+    static_cast<void> ( waddstr(win_help, "THE FIRST TURN TO MOVE WILL ALTERNATE EVERY MATCH.") );
 
     wmove(win_help, 10, 37);
-    static_cast<void> ( waddstr(win_help, "THE LOSING PLAYER WILL MOVE FIRST ON THE FIFTH MATCH.") );
+    static_cast<void> ( waddstr(win_help, "PLAYER 'X' STARTS THE FIRST MATCH.") );
 
     wmove(win_help, 12, 37);
-    static_cast<void> ( waddstr(win_help, "TO MOVE, ENTER THE CELL NUMBER IN THE CONSOLE AND PRESS 'ENTER'.") );
+    static_cast<void> ( waddstr(win_help, "TO MOVE, ENTER THE CORRESPONDING CELL NUMBER IN THE CONSOLE.") );
 
     wmove(win_help, 14, 37);
-    static_cast<void> ( waddstr(win_help, "[2023] [MATTHEW BUCHANAN] [BOCAN SOFTWARE]") );
+    static_cast<void> ( waddstr(win_help, "TO QUIT THE GAME AT ANYTIME, PRESS 'Q'.") );
 
     wrefresh(win_help);
 }

@@ -28,9 +28,6 @@
 
 #include <ncurses.h>
 
-class deque;
-class string;
-
 namespace bocan {
 
 class Printer {
