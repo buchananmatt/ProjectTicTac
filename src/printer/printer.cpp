@@ -37,9 +37,9 @@ using bocan::Printer;
 // brief Singleton instance of the printer class object.
 Printer Printer::s_instance;
 
-// brief
-// brief
-// brief
+// brief Performs initial setup of window output.
+// param None.
+// return None.
 void Printer::SetupScreen() {
 
     m_title.y_origin = 2;
@@ -108,18 +108,18 @@ void Printer::SetupScreen() {
     wborder(win_help, 0, 0, 0, 0, 0, 0, 0, 0);
 }
 
-//
-//
-//
+// brief Resets the screen to start game state.
+// param None.
+// return None.
 void Printer::ResetScreen() {
 
     // clear the console queue
     m_console_queue.clear();
 }
 
-//
-//
-//
+// brief Reprints all windows on the screen.
+// param None.
+// return None.
 void Printer::RefreshScreen() {
 
     PrintTitle();
@@ -130,17 +130,17 @@ void Printer::RefreshScreen() {
     PrintHelp();
 }
 
-//
-//
-//
+// brief Tears down and deallocates window memory.
+// param None.
+// return None.
 void Printer::ExitScreen() {
 
     endwin();
 }
 
-//
-//
-//
+// brief Receives the user input through the console interface.
+// param None.
+// return Character representing user input.
 char Printer::GetConsoleInput() {
 
     wmove(win_console, 24, 1);
@@ -150,9 +150,10 @@ char Printer::GetConsoleInput() {
     return static_cast<char> (input);
 }
 
-//
-//
-//
+// brief Pushes console message related to the game event state to the console queue.
+// brief Pops elements from queue to ensure queue is correct size for output.
+// param[in] Integer representing event state enumerator.
+// return None.
 void Printer::SetConsoleOutput(int event) {
     std::ostringstream output;
     switch(event) {
@@ -226,9 +227,11 @@ void Printer::SetConsoleOutput(int event) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
-//
-//
-//
+// brief Pushes console message related to the game event state to the console queue.
+// brief Ensures console queue is correct size and prints the console window.
+// param[in] Integer representing event state enumerator.
+// param[in] Integer representing the position that was just played.
+// return None.
 void Printer::SetConsoleOutput(int event, int pos) {
     std::ostringstream output;
     switch(event) {
@@ -249,9 +252,9 @@ void Printer::SetConsoleOutput(int event, int pos) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
-//
-//
-//
+// brief Prints the title window.
+// param None.
+// return None.
 void Printer::PrintTitle() {
 
     wmove(win_title, 3, 12);
@@ -259,9 +262,9 @@ void Printer::PrintTitle() {
     wrefresh(win_title);
 }
 
-//
-//
-//
+// brief Prints the game index and player score windows.
+// param None.
+// return None.
 void Printer::PrintScore() {
 
     wmove(win_score_game, 2, 8);
@@ -291,9 +294,9 @@ void Printer::PrintScore() {
     wrefresh(win_score_o);
 }
 
-//
-//
-//
+// brief Prints the tic-tac-toe board in both the board window and help window.
+// param[in] Integer representing board type enumerator.
+// return None.
 void Printer::PrintBoard(int board_type) { 
 
     WINDOW* win;
@@ -606,9 +609,9 @@ void Printer::PrintBoard(int board_type) {
     wrefresh(win); 
 }
 
-//
-//
-//
+// brief Prints the console queue to the console window.
+// param None.
+// return None.
 void Printer::PrintConsole() {
 
     werase(win_console);
@@ -627,9 +630,9 @@ void Printer::PrintConsole() {
     wrefresh(win_console);
 }
 
-//
-//
-//
+// brief Prints the player turn window.
+// param None.
+// return None.
 void Printer::PrintTurn() {
 
     wmove(win_turn, 2, 5);
@@ -651,9 +654,9 @@ void Printer::PrintTurn() {
     wrefresh(win_turn);
 }
 
-//
-//
-//
+// brief Prints the help window.
+// param None.
+// return None.
 void Printer::PrintHelp() {
 
     PrintBoard(HELP_BOARD);

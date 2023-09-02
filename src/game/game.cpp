@@ -31,9 +31,10 @@ using bocan::Game;
 // brief Singleton instance of the Game class object.
 Game Game::s_instance;
 
-//
-//
-//
+// brief Initial setup of member variables and printer to start game state.
+// brief Waits for user input.
+// param None.
+// return None.
 void Game::Start() {
 
     // setup the screen for the first game
@@ -62,9 +63,10 @@ void Game::Start() {
     static_cast <void> ( printer.GetConsoleInput() );
 }
 
-//
-//
-//
+// brief Main Loop of the game. Game has five cycles representing matches.
+// brief User can exit the game at any point during the loop.
+// param None.
+// return None.
 void Game::GameLoop() {
 
     // game is setup for five matches
@@ -129,9 +131,10 @@ void Game::GameLoop() {
     }
 }
 
-//
-//
-//
+// brief End Game sequence. Sets member variables and printer to end game state.
+// brief User can choose to exit (return true) or play again (return false).
+// param None.
+// return Boolean True to exit the program or Boolean False to play again.
 bool Game::EndGame() {
 
     if(m_match_end == PLAYER_QUIT) {
@@ -179,9 +182,9 @@ bool Game::EndGame() {
     return game_over;
 }
 
-//
-//
-//
+// brief Sequence for the user's turn. Provides error checking and checks for a match win.
+// param None.
+// return None.
 void Game::Player_X_Turn() {
 
     m_player_turn = PLAYER_X_TURN;
@@ -231,9 +234,9 @@ void Game::Player_X_Turn() {
     Check_Match_Win();
 }
 
-//
-//
-//
+// Sequence for the opposing player's turn. Uses an algorithm to make a strategic move.
+// param None.
+// return None.
 void Game::Player_O_Turn() {
 
     m_player_turn = PLAYER_O_TURN;
@@ -241,7 +244,7 @@ void Game::Player_O_Turn() {
     printer.SetConsoleOutput(PLAYER_O_TURN);
 
     bool move_flag = false;
-    
+
     // opposing player scans for horizontal advantage
     for(int i = 0; i < board.size(); i+=3) {
         if(move_flag) break;
@@ -409,9 +412,9 @@ void Game::Player_O_Turn() {
     Check_Match_Win();
 }
 
-//
-//
-//
+// brief Sequence to examine the board and determine if there is a winner.
+// param None.
+// return None.
 void Game::Check_Match_Win() {
 
     // check if player quit the game
