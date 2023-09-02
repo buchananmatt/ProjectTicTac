@@ -1,27 +1,16 @@
 CXX=clang++
 CXXFLAGS=-std=c++14
 
-output: ./src/main.o ./src/computer/computer.o ./src/console/console.o ./src/game/game.o ./src/printer/printer.o
-	g++ ./src/main.o ./src/computer/computer.o ./src/console/console.o ./src/game/game.o ./src/printer/printer.o -o ./bin/tictac.out
+output: ./src/main.o ./src/game/game.o ./src/printer/printer.o
+	g++ -lncurses ./src/main.o ./src/game/game.o ./src/printer/printer.o -o ./bin/tictac.out
 
 main.o: ./src/main.cpp
-	g++ -c ./src/main.cpp
+	g++ -c ./src/main.cpp ./bin/main.o
 
-computer.o: ./src/computer/computer.cpp ./src/computer/computer.hpp
-	g++ -c ./src/computer/computer.cpp
+game.o: ./src/game/game.cpp ./src/game/game.hpp ./src/game/gamestate.hpp
+	g++ -c ./src/game/game.cpp ./bin/game.o
 
-console.o: ./src/console/console.cpp ./src/console/console.hpp
-	g++ -c ./src/console/console.cpp
-
-game.o: ./src/game/game.cpp ./src/game/game.hpp
-	g++ -c ./src/game/game.cpp
-
-printer.o: ./src/printer/printer.cpp ./src/printer/printer,hpp
-	g++ -c ./src/printer/printer.cpp
+printer.o: ./src/printer/printer.cpp ./src/printer/printer.hpp ./src/game/gamestate.hpp
+	g++ -c ./src/printer/printer.cpp ./bin/printer.o
 
 clean:
-	rm ./src/*.o
-	rm ./src/computer/*.o
-	rm ./src/console/*.o
-	rm ./src/game/*.o
-	rm ./src/printer/*.o

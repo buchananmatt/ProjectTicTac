@@ -20,7 +20,7 @@
 // SEE THE LICENSE FOR THE SPECIFIC LANGUAGE GOVERNING PERMISSIONS AND
 // LIMITATIONS UNDER THE LICENSE.
 
-#include <queue>
+#include <deque>
 #include <string>
 #include <sstream>
 
@@ -320,7 +320,7 @@ void Printer::PrintBoard(int board_type) {
                     waddch(win, 'O');
                     break;
             }
-        } else if(board_type == GAME_BOARD && k = 13) {
+        } else if(board_type == GAME_BOARD && k == 13) {
             switch(bocan::Game::Get().board.at(1)) {
                 case EMPTY:
                     waddch(win, ' ');
@@ -415,7 +415,7 @@ void Printer::PrintBoard(int board_type) {
                     waddch(win, 'O');
                     break;
             }
-        } else if(board_type == GAME_BOARD && k = 13) {
+        } else if(board_type == GAME_BOARD && k == 13) {
             switch(bocan::Game::Get().board.at(4)) {
                 case EMPTY:
                     waddch(win, ' ');
@@ -510,7 +510,7 @@ void Printer::PrintBoard(int board_type) {
                     waddch(win, 'O');
                     break;
             }
-        } else if(board_type == GAME_BOARD && k = 13) {
+        } else if(board_type == GAME_BOARD && k == 13) {
             switch(bocan::Game::Get().board.at(7)) {
                 case EMPTY:
                     waddch(win, ' ');

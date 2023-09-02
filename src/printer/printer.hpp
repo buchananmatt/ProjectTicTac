@@ -23,9 +23,12 @@
 #ifndef PRINTER_HPP
 #define PRINTER_HPP
 
+#include <deque>
+#include <string>
+
 #include <ncurses.h>
 
-class queue;
+class deque;
 class string;
 
 namespace bocan {

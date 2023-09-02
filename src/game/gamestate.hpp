@@ -1,5 +1,5 @@
 //
-// EVENT.HPP [PROJECT TICTAC]
+// GAMESTATE.HPP [PROJECT TICTAC]
 // C++ VERSION GNU++14
 // macOS 11.7.9
 // DUAL-CORE INTEL CORE i5 @ 2.8 GHZ
@@ -50,7 +50,7 @@ namespace bocan {
     enum board_type {
         HELP_BOARD = 1,
         GAME_BOARD = 2
-    } m_board_type;
+    };
 
 } // NAMESPACE BOCAN
 

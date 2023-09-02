@@ -197,7 +197,7 @@ void Game::Player_O_Turn() {
         if(i == EMPTY && move_flag == false) {
             board.at(i) = PLAYER_O_POS;
             printer.SetConsoleOutput(PLAYER_O_MOVE);
-            move_flag == true;
+            move_flag = true;
         } 
     }
 

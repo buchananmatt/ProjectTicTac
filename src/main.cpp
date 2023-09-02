@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
     do {
         if(game.Start())
             game.GameLoop();
-            
+
     } while(!game.EndGame());
 
     return 0;

@@ -23,7 +23,9 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-class array;
+#include <array>
+
+#include "../printer/printer.hpp"
 
 namespace bocan {
 
@@ -42,7 +44,7 @@ private:
 
     friend class Printer;
 
-    Printer& printer = bocan::Printer::Get();
+    Printer& printer = Printer::Get();
 
     std::array<int, 9> board;
 
