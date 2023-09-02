@@ -31,18 +31,6 @@ using bocan::Game;
 // brief Singleton instance of the Game class object.
 Game Game::s_instance;
 
-void Game::DebugTest() {
-
-    Start();
-    GameLoop();
-//    printer.SetupScreen();
-//    printer.ResetScreen();
-//    printer.RefreshScreen();
-//    printer.SetConsoleOutput(START_GAME);
-//    printer.GetConsoleInput();
-    printer.ExitScreen();
-}
-
 //
 //
 //
