@@ -1,10 +1,12 @@
 =Project Tic Tac
 ==Overview
 
-This program is my implementation of command-line tick-tac-toe. 
+This program is my implementation of command-line tic-tac-toe. 
 The program uses the ncurses library to draw windows and provide a Terminal (text) User Interface (TUI).
 
 Each game of tic-tac-toe consists of five matches. The player who wins the most matches wins the game.
+
+{{https://github.com/buchananmatt/ProjectTicTac/tree/master/doc/screenshot.png | IN-GAME SCREENSHOT [2023]}}
 
 ==Build
 Machine Description:
@@ -19,7 +21,7 @@ Software Used:
 * Git 2.32.0                https://git-scm.com/
 * GNU Debugger 13.2         https://www.sourceware.org/gdb/
 
-Building and running this game require the ncurses library be installed on your local computer. 
+Ncurses is implemented as a dynamic library in this program. Building and running this game requires the ncurses library be installed on your local computer. 
 To learn more and to download, see https://invisible-island.net/ncurses/ncurses.html. 
 
 From a terminal, navigate to the root project directory and run:
@@ -39,8 +41,8 @@ For fun, I also developed a zsh script to run this program from anywhere in the 
 Edit the tictac.sh document to reflect the path to your project directory and the shell you are using.
 
 {{{
-#!/bin/zsh 
-cd /Users/Some_User/Documents/ProjectTicTac
+#!/bin/zsh                                  #edit this line
+cd /Users/Some_User/Documents/ProjectTicTac #edit this line
 ./bin/tictac.out
 }}}
 
