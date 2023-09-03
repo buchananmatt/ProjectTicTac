@@ -26,7 +26,7 @@
 #include "../game/gamestate.hpp"
 #include "../printer/printer.hpp"
 
-using bocan::Game;
+using bocan::tictac::Game;
 
 // brief Singleton instance of the Game class object.
 Game Game::s_instance;

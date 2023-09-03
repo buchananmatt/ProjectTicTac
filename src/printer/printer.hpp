@@ -30,6 +30,8 @@
 
 namespace bocan {
 
+namespace tictac {
+
 class Printer {
 public:
     
@@ -90,6 +92,8 @@ private:
     void PrintHelp();
 
 };
+
+} // NAMESPACE TICTAC
 
 } // NAMESPACE BOCAN
 

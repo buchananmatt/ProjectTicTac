@@ -25,7 +25,7 @@
 
 int main(int argc, char** argv) {
 
-    auto& game = bocan::Game::Get();
+    auto& game = bocan::tictac::Game::Get();
 
     do {
         game.Start();

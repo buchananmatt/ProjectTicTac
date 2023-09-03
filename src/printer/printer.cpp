@@ -32,7 +32,7 @@
 #include "../game/gamestate.hpp"
 #include "../printer/printer.hpp"
 
-using bocan::Printer;
+using bocan::tictac::Printer;
 
 // brief Singleton instance of the printer class object.
 Printer Printer::s_instance;
@@ -180,15 +180,15 @@ void Printer::SetConsoleOutput(int event) {
             m_console_queue.push_back(output.str());
             break;
         case PLAYER_O_MATCH_WIN:
-            output << ">PLAYER 'O' WINS MATCH " << bocan::Game::Get().m_match << ".";
+            output << ">PLAYER 'O' WINS MATCH " << bocan::tictac::Game::Get().m_match << ".";
             m_console_queue.push_back(output.str());
             break;
         case PLAYER_X_MATCH_WIN:
-            output << ">PLAYER 'X' WINS MATCH " << bocan::Game::Get().m_match << ".";
+            output << ">PLAYER 'X' WINS MATCH " << bocan::tictac::Game::Get().m_match << ".";
             m_console_queue.push_back(output.str());
             break;
         case MATCH_TIE:
-            output << ">MATCH " << bocan::Game::Get().m_match << " IS A TIE!";
+            output << ">MATCH " << bocan::tictac::Game::Get().m_match << " IS A TIE!";
             m_console_queue.push_back(output.str());
             break;
         case PLAYER_O_GAME_WIN:
@@ -279,7 +279,7 @@ void Printer::PrintScore() {
     static_cast<void> ( waddstr(win_score_game, "GAME") );          //curses.h
 
     wmove(win_score_game, 4, 7);                                    //curses.h
-    char c_match = bocan::Game::Get().m_match + '0';                //curses.h
+    char c_match = bocan::tictac::Game::Get().m_match + '0';                //curses.h
     static_cast<void> ( waddch(win_score_game, c_match) );          //curses.h
     static_cast<void> ( waddstr(win_score_game, " // 5") );         //curses.h
 
@@ -287,14 +287,14 @@ void Printer::PrintScore() {
     static_cast<void> ( waddstr(win_score_x, "'X' WINS") );         //curses.h
 
     wmove(win_score_x, 4, 9);                                       //curses.h
-    char c_x_wins = bocan::Game::Get().m_x_wins + '0';              //curses.h
+    char c_x_wins = bocan::tictac::Game::Get().m_x_wins + '0';              //curses.h
     static_cast<void> ( waddch(win_score_x, c_x_wins) );            //curses.h
 
     wmove(win_score_o, 2, 6);                                       //curses.h
     static_cast<void> ( waddstr(win_score_o, "'O' WINS") );         //curses.h
 
     wmove(win_score_o, 4, 9);                                       //curses.h
-    char c_o_wins = bocan::Game::Get().m_o_wins + '0';              //curses.h
+    char c_o_wins = bocan::tictac::Game::Get().m_o_wins + '0';              //curses.h
     static_cast<void> ( waddch(win_score_o, c_o_wins) );            //curses.h
 
     wrefresh(win_score_game);                                       //curses.h
@@ -352,7 +352,7 @@ void Printer::PrintBoard(int board_type) {
 
             waddch(win, '#');                                       //curses.h
         } else if(board_type == GAME_BOARD && k == 4) {
-            switch(bocan::Game::Get().board.at(0)) {
+            switch(bocan::tictac::Game::Get().board.at(0)) {
                 case EMPTY:
                     waddch(win, ' ');                               //curses.h
                     break;
@@ -364,7 +364,7 @@ void Printer::PrintBoard(int board_type) {
                     break;
             }
         } else if(board_type == GAME_BOARD && k == 12) {
-            switch(bocan::Game::Get().board.at(1)) {
+            switch(bocan::tictac::Game::Get().board.at(1)) {
                 case EMPTY:
                     waddch(win, ' ');                               //curses.h
                     break;
@@ -376,7 +376,7 @@ void Printer::PrintBoard(int board_type) {
                     break;
             }
         } else if(board_type == GAME_BOARD && k == 20) {
-            switch(bocan::Game::Get().board.at(2)) {
+            switch(bocan::tictac::Game::Get().board.at(2)) {
                 case EMPTY:
                     waddch(win, ' ');                               //curses.h
                     break;
@@ -447,7 +447,7 @@ void Printer::PrintBoard(int board_type) {
 
             waddch(win, '#');                                       //curses.h
         } else if(board_type == GAME_BOARD && k == 4) {
-            switch(bocan::Game::Get().board.at(3)) {
+            switch(bocan::tictac::Game::Get().board.at(3)) {
                 case EMPTY:
                     waddch(win, ' ');                               //curses.h
                     break;
@@ -459,7 +459,7 @@ void Printer::PrintBoard(int board_type) {
                     break;
             }
         } else if(board_type == GAME_BOARD && k == 12) {
-            switch(bocan::Game::Get().board.at(4)) {
+            switch(bocan::tictac::Game::Get().board.at(4)) {
                 case EMPTY:
                     waddch(win, ' ');                               //curses.h
                     break;
@@ -471,7 +471,7 @@ void Printer::PrintBoard(int board_type) {
                     break;
             }
         } else if(board_type == GAME_BOARD && k == 20) {
-            switch(bocan::Game::Get().board.at(5)) {
+            switch(bocan::tictac::Game::Get().board.at(5)) {
                 case EMPTY:
                     waddch(win, ' ');                               //curses.h
                     break;
@@ -542,7 +542,7 @@ void Printer::PrintBoard(int board_type) {
 
             waddch(win, '#');                                       //curses.h
         } else if(board_type == GAME_BOARD && k == 4) {
-            switch(bocan::Game::Get().board.at(6)) {
+            switch(bocan::tictac::Game::Get().board.at(6)) {
                 case EMPTY:
                     waddch(win, ' ');                               //curses.h
                     break;
@@ -554,7 +554,7 @@ void Printer::PrintBoard(int board_type) {
                     break;
             }
         } else if(board_type == GAME_BOARD && k == 12) {
-            switch(bocan::Game::Get().board.at(7)) {
+            switch(bocan::tictac::Game::Get().board.at(7)) {
                 case EMPTY:
                     waddch(win, ' ');                               //curses.h
                     break;
@@ -566,7 +566,7 @@ void Printer::PrintBoard(int board_type) {
                     break;
             }
         } else if(board_type == GAME_BOARD && k == 20) {
-            switch(bocan::Game::Get().board.at(8)) {
+            switch(bocan::tictac::Game::Get().board.at(8)) {
                 case EMPTY:
                     waddch(win, ' ');                               //curses.h
                     break;
@@ -645,7 +645,7 @@ void Printer::PrintTurn() {
 
     wmove(win_turn, 2, 5);                                                                      //curses.h
 
-    switch(bocan::Game::Get().m_player_turn) {
+    switch(bocan::tictac::Game::Get().m_player_turn) {
         case START_GAME:
             static_cast<void> ( waddstr(win_turn, " ") );                                       //curses.h
             break;

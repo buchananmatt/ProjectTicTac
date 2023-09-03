@@ -29,6 +29,8 @@
 
 namespace bocan {
 
+namespace tictac {
+
 class Game {
 public:
 
@@ -66,6 +68,8 @@ private:
     void Player_O_Turn();
     void Check_Match_Win();
 };
+
+} // NAMESPACE TICTAC
 
 } // NAMESPACE BOCAN
 
