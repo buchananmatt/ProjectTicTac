@@ -1,0 +1,162 @@
+=Project Tic Tac
+==Overview
+
+This program is my implementation of command-line tick-tac-toe. 
+The program uses the ncurses library to draw windows and provide a Terminal (text) User Interface (TUI).
+
+Each game of tic-tac-toe consists of five matches. The player who wins the most matches wins the game.
+
+==Build
+Machine Description:
+* C++ Version: GNU++14
+* macOS 11.7.9
+* Dual-Core Intel Core i5 @ 2.8 GHz
+
+Software Used:
+* Visual Studio Code        https://code.visualstudio.com/
+* Apple Clang 13.0.0        https://clang.llvm.org/
+* GNU Make 3.81             https://www.gnu.org/software/make/
+* Git 2.32.0                https://git-scm.com/
+* GNU Debugger 13.2         https://www.sourceware.org/gdb/
+
+Building and running this game require the ncurses library be installed on your local computer. 
+To learn more and to download, see https://invisible-island.net/ncurses/ncurses.html. 
+
+From a terminal, navigate to the root project directory and run:
+
+{{{
+make
+}}}
+
+The program can be ran from the file explorer by running the file "tictac.out", or from a terminal by running the command from the project directory:
+
+{{{
+./bin/tictac.out
+}}}
+
+For fun, I also developed a zsh script to run this program from anywhere in the terminal. The instructions to do so are:
+
+Edit the tictac.sh document to reflect the path to your project directory and the shell you are using.
+
+{{{
+#!/bin/zsh 
+cd /Users/Some_User/Documents/ProjectTicTac
+./bin/tictac.out
+}}}
+
+Copy this file to your local /usr/local/bin folder with the command
+
+{{{
+cp ./tictac.sh /usr/local/bin/bocan_tictac.sh
+}}}
+
+Enable the file to be ran as an executable with the command
+
+{{{
+chmod +x /usr/local/bin/bocan_tictac.sh
+}}}
+
+After these steps, the program can be ran anywhere in the terminal by running the command
+{{{
+bocan_tictac.sh
+}}}
+
+I created an alias in my shell so I didn't have to type .sh to run my program.
+
+{{{
+alias tictac=bocan_tictac.sh
+}}}
+
+==Known Issues
+
+===Opposing Player Algorithm
+
+The current algorithm for the opposing player works well for the moment and can generally tie the game during most gameplays. 
+There is still a winning strategy that the user can employ to outsmart the algorithm.
+The game right now is about the right amount of challenge, however I plan to take another look at the
+algorithm to see how it can be improved to generate a tie game everytime.
+
+==Planned Updates
+
+* Update to the opposing player algorithm as described above.
+* Add different text colors to the console output.
+
+==Project Goals
+
+For this project, I wanted to incorporate multiple class types, 
+a rudimentary "artificial intelligence" via the opposing player, 
+and a terminal user interface using a third-party library. My original design had four total classes
+(game, computer, console, printer), however I tailored this down to two during the development.
+
+==Program Design
+
+The program is implemented via two class object types (both implemented as singleton objects), the game, and the printer.
+The game controls all of the game play flow and logic, to include the logic for the opposing player.
+The printer controls the user interface and acts as the interface to the ncurses library.
+
+===Public Methods (Game)
+
+**Start()**
+
+**GameLoop()**
+
+**EndGame()**
+
+===Public Methods (Printer)
+
+**SetupScreen()**
+
+**ResetScreen()**
+
+**RefreshScreen()**
+
+**ExitScreen()**
+
+**GetConsoleInput()**
+
+**SetConsoleOutput()**
+
+**SetConsoleOutput()**
+
+===Private Methods (Game)
+
+**Player_X_Turn()**
+
+**Player_O_Turn()**
+
+**Check_Match_Win()**
+
+===Private Methods (Printer)
+
+**PrintTitle()**
+
+**PrintScore()**
+
+**PrintBoard()**
+
+**PrintConsole()**
+
+**PrintTurn()**
+
+**PrintHelp()**
+
+==Project Timeline
+
+* Project Start | 20 August 2023
+* Program Stable | 1 September 2023
+
+==License
+
+COPYRIGHT [2023] [MATTHEW T. BUCHANAN] [BOCAN SOFTWARE]
+
+Licensed under the Apache License, Version 2.0 (the "License);
+You may not use these files except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apacher.org/licenses.LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the license is distributed on an "as is" basis, 
+without warranties or conditions of any kind, either express or implied.
+See the License for th specific language governing permissions and
+limitations under the license.
