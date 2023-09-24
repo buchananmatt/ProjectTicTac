@@ -42,44 +42,44 @@ Printer Printer::s_instance;
 // return None.
 void Printer::SetupScreen() {
 
-    m_title.y_origin = 2;
-    m_title.x_origin = 10;
+    m_title.y_origin = 1;
+    m_title.x_origin = 2;
     m_title.y_height = 7;
     m_title.x_length = 40;
 
-    m_board.y_origin = 10;
-    m_board.x_origin = 10;
-    m_board.y_height = 20;
+    m_board.y_origin = 8;
+    m_board.x_origin = 2;
+    m_board.y_height = 17;
     m_board.x_length = 40;
 
-    m_turn.y_origin = 31;
-    m_turn.x_origin = 10;
+    m_turn.y_origin = 25;
+    m_turn.x_origin = 2;
     m_turn.y_height = 5;
     m_turn.x_length = 40;
 
-    m_score_game.y_origin = 2;
-    m_score_game.x_origin = 52;
+    m_score_game.y_origin = 1;
+    m_score_game.x_origin = 44;
     m_score_game.y_height = 7;
     m_score_game.x_length = 20;
 
-    m_score_x.y_origin = 2;
-    m_score_x.x_origin = 74;
+    m_score_x.y_origin = 1;
+    m_score_x.x_origin = 66;
     m_score_x.y_height = 7;
     m_score_x.x_length = 20;
 
-    m_score_o.y_origin = 2;
-    m_score_o.x_origin = 96;
+    m_score_o.y_origin = 1;
+    m_score_o.x_origin = 88;
     m_score_o.y_height = 7;
     m_score_o.x_length = 20;
 
-    m_console.y_origin = 10;
-    m_console.x_origin = 52;
-    m_console.y_height = 26;
+    m_console.y_origin = 8;
+    m_console.x_origin = 44;
+    m_console.y_height = 22;
     m_console.x_length = 64;
 
-    m_help.y_origin = 37;
-    m_help.x_origin = 10;
-    m_help.y_height = 18;
+    m_help.y_origin = 30;
+    m_help.x_origin = 2;
+    m_help.y_height = 17;
     m_help.x_length = 106;
 
     m_max_console_size = m_console.y_height - 5;
@@ -151,7 +151,7 @@ void Printer::ExitScreen() {
 // return Character representing user input.
 char Printer::GetConsoleInput() {
 
-    wmove(win_console, 24, 1);                          //curses.h
+    wmove(win_console, 20, 1);                          //curses.h
     static_cast<void> ( waddch(win_console, '>') );     //curses.h
     int input = wgetch(win_console);                    //curses.h
 
@@ -312,7 +312,7 @@ void Printer::PrintBoard(int board_type) {
 
     if(board_type == GAME_BOARD) {  
         win = win_board;
-        row_start = 2;
+        row_start = 1;
     } else {
         win = win_help;
         row_start = 1;

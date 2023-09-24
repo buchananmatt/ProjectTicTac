@@ -23,3 +23,6 @@ clean:
 
 debug:
 	g++ -std=gnu++14 -g -lncurses ./src/main.cpp ./src/game/game.cpp ./src/printer/printer.cpp -o ./bin/tictacdebug.out
+
+run:
+	./bin/tictac.out
