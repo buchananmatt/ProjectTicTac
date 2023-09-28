@@ -14,12 +14,12 @@ printer.o: ./src/printer/printer.cpp ./src/printer/printer.hpp ./src/game/gamest
 	g++ -c ./src/printer/printer.cpp ./bin/printer.o
 
 clean:
-	rm ./src/main.o
-	rm ./src/printer/printer.o
-	rm ./src/game/game.o
-	rm -r ./bin/tictacdebug.out.dSYM
-	rm ./bin/tictacdebug.out
-	rm ./test/a.out
+	rm -f ./src/main.o
+	rm -f ./src/printer/printer.o
+	rm -f ./src/game/game.o
+	rm -f -r ./bin/tictacdebug.out.dSYM
+	rm -f ./bin/tictacdebug.out
+	rm -f ./test/a.out
 
 debug:
 	g++ -std=gnu++14 -g -lncurses ./src/main.cpp ./src/game/game.cpp ./src/printer/printer.cpp -o ./bin/tictacdebug.out

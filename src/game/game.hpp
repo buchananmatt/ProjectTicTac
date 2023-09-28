@@ -25,13 +25,14 @@
 
 #include <array>
 
-#include "../printer/printer.hpp"
+#include "../Printer/Printer.hpp"
 
 namespace bocan {
 
-namespace tictac {
+namespace TicTac {
 
 class Game {
+
 public:
 
     static Game& Get() { return s_instance; }

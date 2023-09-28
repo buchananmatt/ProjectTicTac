@@ -22,11 +22,11 @@
 
 #include <array>
 
-#include "../game/game.hpp"
-#include "../game/gamestate.hpp"
-#include "../printer/printer.hpp"
+#include "../Game/Game.hpp"
+#include "../Game/GameState.hpp"
+#include "../Printer/Printer.hpp"
 
-using bocan::tictac::Game;
+using bocan::TicTac::Game;
 
 // brief Singleton instance of the Game class object.
 Game Game::s_instance;

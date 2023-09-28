@@ -30,9 +30,10 @@
 
 namespace bocan {
 
-namespace tictac {
+namespace TicTac {
 
 class Printer {
+
 public:
     
     static Printer& Get() { return s_instance; }

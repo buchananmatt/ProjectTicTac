@@ -25,6 +25,8 @@
 
 namespace bocan {
 
+namespace TicTac {
+
    enum event_state {
         START_GAME = 0,
         PLAYER_O_TURN,
@@ -55,6 +57,8 @@ namespace bocan {
         HELP_BOARD = 1,
         GAME_BOARD = 2
     };
+
+} // NAMESPACE TICTAC
 
 } // NAMESPACE BOCAN
 
